@@ -3,6 +3,9 @@
 # Persisting of legeerklæringer
 Application for persisting legeerklæringer in database
 
+<img src="./src/svg/flytdiagram.svg" alt="Image of the flow of the pale-2 application">
+
+
 ## Technologies used
 * Kotlin
 * Ktor
