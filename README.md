@@ -10,6 +10,7 @@ Application for persisting legeerklæringer in database
 * JDK 12
 * Junit
 * Jackson
+* Postgres
 
 #### Requirements
 

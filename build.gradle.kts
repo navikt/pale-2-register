@@ -5,6 +5,13 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "no.nav.syfo"
 version = "1.0.0"
 
+
+val ktorVersion = "1.3.0"
+val logbackVersion = "1.2.3"
+val logstashEncoderVersion = "5.1"
+val prometheusVersion = "0.8.0"
+val junitJupiterVersion = "5.6.0"
+
 plugins {
     kotlin("jvm") version "1.3.70"
     id("com.github.johnrengelman.shadow") version "5.2.0"
@@ -26,6 +33,22 @@ repositories {
             password = githubPassword
         }
     }
+}
+dependencies {
+    implementation(kotlin("stdlib"))
+
+    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+
+    implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
+    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
+
+    implementation("ch.qos.logback:logback-classic:$logbackVersion")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
 
 tasks {
