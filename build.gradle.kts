@@ -11,8 +11,11 @@ val logbackVersion = "1.2.3"
 val logstashEncoderVersion = "5.1"
 val prometheusVersion = "0.8.0"
 val junitJupiterVersion = "5.6.0"
+val pale2CommonVersion = "1.428fec4"
+val jacksonVersion = "2.9.7"
 
 plugins {
+    java
     kotlin("jvm") version "1.3.70"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.jmailen.kotlinter") version "2.2.0"
@@ -45,6 +48,12 @@ dependencies {
 
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
+
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
+    implementation("no.nav.syfo:pale-2-common-models:$pale2CommonVersion")
+    implementation("no.nav.syfo:pale-2-common-kafka:$pale2CommonVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
