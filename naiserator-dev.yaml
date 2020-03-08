@@ -44,7 +44,7 @@ spec:
     - "https://pale-2-register.nais.preprod.local"
   env:
     - name: PALE_2_REGISTER_DB_URL
-      value: jdbc:postgresql://b27dbvl009.preprod.local:5432/pale-2-register
+      value: jdbc:postgresql://b27dbvl013.preprod.local:5432/pale-2-register
     - name: SERVICE_USER_USERNAME
       value: /secrets/serviceuser/username
     - name: SERVICE_USER_PASSWORD
