@@ -8,7 +8,7 @@ import no.nav.syfo.metrics.INCOMING_MESSAGE_COUNTER
 import no.nav.syfo.metrics.MESSAGE_STORED_IN_DB_COUNTER
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
-import no.nav.syfo.persistering.db.lagreMottattSykmelding
+import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.wrapExceptions
 
@@ -30,9 +30,9 @@ suspend fun handleRecivedMessage(
             )
         } else {
 
-            database.lagreMottattSykmelding(legeerklaeringSak)
+            database.lagreMottattLegeerklearing(legeerklaeringSak)
             log.info(
-                "Manuell oppgave lagret i databasen, for {}",
+                "Legereklearing lagret i databasen, for {}",
                 fields(loggingMeta)
             )
             MESSAGE_STORED_IN_DB_COUNTER.inc()

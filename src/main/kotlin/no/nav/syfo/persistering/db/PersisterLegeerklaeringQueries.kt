@@ -10,7 +10,7 @@ import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.objectMapper
 import org.postgresql.util.PGobject
 
-fun DatabaseInterface.lagreMottattSykmelding(legeerklaeringSak: LegeerklaeringSak) {
+fun DatabaseInterface.lagreMottattLegeerklearing(legeerklaeringSak: LegeerklaeringSak) {
     connection.use { connection ->
         connection.opprettLegeerklaeringOpplysninger(legeerklaeringSak.receivedLegeerklaering)
         connection.opprettLegeerklaeringsdokument(legeerklaeringSak.receivedLegeerklaering.legeerklaering)
