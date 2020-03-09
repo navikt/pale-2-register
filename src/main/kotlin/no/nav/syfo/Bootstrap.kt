@@ -23,6 +23,7 @@ import no.nav.syfo.kafka.envOverrides
 import no.nav.syfo.kafka.loadBaseConfig
 import no.nav.syfo.kafka.toConsumerConfig
 import no.nav.syfo.model.LegeerklaeringSak
+import no.nav.syfo.persistering.handleRecivedMessage
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
 import no.nav.syfo.utils.getFileAsString
