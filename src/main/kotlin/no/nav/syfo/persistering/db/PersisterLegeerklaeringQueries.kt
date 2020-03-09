@@ -68,9 +68,8 @@ private fun Connection.opprettLegeerklaeringsdokument(legeerklaering: Legeerklae
     }
 }
 
-fun Connection.opprettBehandlingsutfall(validationResult: ValidationResult, legeerklaeringid: String) =
-    use { connection ->
-        connection.prepareStatement(
+private fun Connection.opprettBehandlingsutfall(validationResult: ValidationResult, legeerklaeringid: String) {
+    this.prepareStatement(
             """
                     INSERT INTO BEHANDLINGSUTFALL(id, behandlingsutfall) VALUES (?, ?)
                 """
@@ -79,8 +78,6 @@ fun Connection.opprettBehandlingsutfall(validationResult: ValidationResult, lege
             it.setObject(2, validationResult.toPGObject())
             it.executeUpdate()
         }
-
-        connection.commit()
     }
 
 fun Connection.erLegeerklaeringsopplysningerLagret(legeerklaeringid: String) =

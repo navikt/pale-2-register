@@ -3,7 +3,7 @@ package no.nav.syfo.metrics
 import io.prometheus.client.Counter
 import io.prometheus.client.Histogram
 
-const val METRICS_NS = "syfosmmanuellbackend"
+const val METRICS_NS = "pale2register"
 
 val MESSAGE_STORED_IN_DB_COUNTER: Counter = Counter.build()
         .namespace(METRICS_NS)
