@@ -11,12 +11,15 @@ val logbackVersion = "1.2.3"
 val logstashEncoderVersion = "5.1"
 val prometheusVersion = "0.8.0"
 val junitJupiterVersion = "5.6.0"
-val pale2CommonVersion = "1.428fec4"
+val pale2CommonVersion = "1.9d7eb76"
 val jacksonVersion = "2.9.7"
 val vaultJavaDriveVersion = "3.1.0"
 val postgresVersion = "42.2.5"
 val flywayVersion = "5.2.4"
 val hikariVersion = "3.3.0"
+val kafkaEmbeddedVersion = "2.4.0"
+val kluentVersion = "1.49"
+val postgresEmbeddedVersion = "0.13.3"
 
 plugins {
     java
@@ -67,6 +70,16 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+
+    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedVersion")
+
+    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
+
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
+        exclude(group = "org.eclipse.jetty")
+    }
+
+    testImplementation("com.opentable.components:otj-pg-embedded:$postgresEmbeddedVersion")
 }
 
 tasks {

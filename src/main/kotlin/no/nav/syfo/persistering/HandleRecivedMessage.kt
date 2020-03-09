@@ -23,13 +23,14 @@ suspend fun handleRecivedMessage(
         INCOMING_MESSAGE_COUNTER.inc()
 
         if (database.connection.erLegeerklaeringsopplysningerLagret(
-                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)) {
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            )
+        ) {
             log.warn(
                 "Legereklearing med legereklearingsid {}, er allerede lagret i databasen, {}",
                 legeerklaeringSak.receivedLegeerklaering.legeerklaering.id, fields(loggingMeta)
             )
         } else {
-
             database.lagreMottattLegeerklearing(legeerklaeringSak)
             log.info(
                 "Legereklearing lagret i databasen, for {}",
