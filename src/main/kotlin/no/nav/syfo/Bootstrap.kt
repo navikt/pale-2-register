@@ -17,6 +17,8 @@ import net.logstash.logback.argument.StructuredArguments
 import no.nav.syfo.application.ApplicationServer
 import no.nav.syfo.application.ApplicationState
 import no.nav.syfo.application.createApplicationEngine
+import no.nav.syfo.db.Database
+import no.nav.syfo.db.VaultCredentialService
 import no.nav.syfo.kafka.envOverrides
 import no.nav.syfo.kafka.loadBaseConfig
 import no.nav.syfo.kafka.toConsumerConfig
@@ -24,6 +26,7 @@ import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
 import no.nav.syfo.utils.getFileAsString
+import no.nav.syfo.vault.RenewVaultService
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.Logger
@@ -44,6 +47,9 @@ fun main() {
         serviceuserPassword = getFileAsString(env.serviceuserPasswordPath)
     )
 
+    val vaultCredentialService = VaultCredentialService()
+    val database = Database(env, vaultCredentialService)
+
     val applicationState = ApplicationState()
 
     val applicationEngine = createApplicationEngine(env, applicationState)
@@ -55,7 +61,11 @@ fun main() {
         "${env.applicationName}-consumer", valueDeserializer = StringDeserializer::class
     )
 
-    launchListeners(env, applicationState, consumerConfig)
+    applicationState.ready = true
+
+    RenewVaultService(vaultCredentialService, applicationState).startRenewTasks()
+
+    launchListeners(env, applicationState, consumerConfig, database)
 }
 
 fun createListener(applicationState: ApplicationState, action: suspend CoroutineScope.() -> Unit): Job =
@@ -74,7 +84,8 @@ fun createListener(applicationState: ApplicationState, action: suspend Coroutine
 fun launchListeners(
     env: Environment,
     applicationState: ApplicationState,
-    consumerProperties: Properties
+    consumerProperties: Properties,
+    database: Database
 ) {
     createListener(applicationState) {
         val kafkaLegeerklaeringSakconsumer = KafkaConsumer<String, String>(consumerProperties)
@@ -83,7 +94,8 @@ fun launchListeners(
 
         blockingApplicationLogic(
             kafkaLegeerklaeringSakconsumer,
-            applicationState
+            applicationState,
+            database
         )
     }
 }
@@ -91,7 +103,8 @@ fun launchListeners(
 @KtorExperimentalAPI
 suspend fun blockingApplicationLogic(
     kafkaLegeerklaeringSakconsumer: KafkaConsumer<String, String>,
-    applicationState: ApplicationState
+    applicationState: ApplicationState,
+    database: Database
 ) {
     while (applicationState.ready) {
         kafkaLegeerklaeringSakconsumer.poll(Duration.ofMillis(0)).forEach { consumerRecord ->
@@ -105,11 +118,10 @@ suspend fun blockingApplicationLogic(
                 legeerklaeringId = legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
             )
 
-            // TODO store i DB
-
             handleRecivedMessage(
                 legeerklaeringSak,
-                loggingMeta
+                loggingMeta,
+                database
             )
         }
 

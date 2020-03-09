@@ -36,7 +36,7 @@ spec:
   vault:
     enabled: true
     paths:
-      - kvPath: serviceuser/data/prod/pale-2-register
+      - kvPath: serviceuser/data/prod/srvpale2reg
         mountPath: /secrets/serviceuser
       - kvPath: /kv/prod/fss/pale-2-register/default
         mountPath: /secrets/default

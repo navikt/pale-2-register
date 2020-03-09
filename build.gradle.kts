@@ -13,6 +13,10 @@ val prometheusVersion = "0.8.0"
 val junitJupiterVersion = "5.6.0"
 val pale2CommonVersion = "1.428fec4"
 val jacksonVersion = "2.9.7"
+val vaultJavaDriveVersion = "3.1.0"
+val postgresVersion = "42.2.5"
+val flywayVersion = "5.2.4"
+val hikariVersion = "3.3.0"
 
 plugins {
     java
@@ -42,6 +46,11 @@ dependencies {
 
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
+
+    implementation("org.postgresql:postgresql:$postgresVersion")
+    implementation("com.zaxxer:HikariCP:$hikariVersion")
+    implementation("org.flywaydb:flyway-core:$flywayVersion")
+    implementation("com.bettercloud:vault-java-driver:$vaultJavaDriveVersion")
 
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
