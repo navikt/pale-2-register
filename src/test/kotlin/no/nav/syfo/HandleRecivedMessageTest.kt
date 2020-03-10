@@ -21,6 +21,7 @@ import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
 import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
 import no.nav.syfo.util.TestDB
+import no.nav.syfo.util.hentLegeerklearing
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
@@ -50,7 +51,7 @@ internal class HandleRecivedMessageTest {
             fornavn = "Test",
             mellomnavn = "Testerino",
             etternavn = "Testsen",
-            fnr = "0123456789",
+            fnr = "12349812345",
             navKontor = "NAV Stockholm",
             adresse = "Oppdiktet veg 99",
             postnummer = 9999,
@@ -178,5 +179,14 @@ internal class HandleRecivedMessageTest {
         database.connection.erLegeerklaeringsopplysningerLagret(
             legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
         ) shouldEqual true
+    }
+
+    @Test
+    internal fun `Check legeerklaering is stored in db`() {
+        database.lagreMottattLegeerklearing(legeerklaeringSak)
+
+        val legeerklaeringOpplysninger = database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+
+        legeerklaeringOpplysninger.first().pasient_fnr shouldEqual legeerklaeringSak.receivedLegeerklaering.personNrPasient
     }
 }
