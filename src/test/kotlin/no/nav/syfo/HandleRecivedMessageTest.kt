@@ -182,6 +182,13 @@ internal class HandleRecivedMessageTest {
     }
 
     @Test
+    internal fun `Check that legeerklaering is not allready stored in db`() {
+        database.lagreMottattLegeerklearing(legeerklaeringSak)
+
+        database.connection.erLegeerklaeringsopplysningerLagret("23") shouldEqual false
+    }
+
+    @Test
     internal fun `Check legeerklaering is stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
