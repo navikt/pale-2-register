@@ -55,15 +55,48 @@ or the command line:
 ./gradlew -PgithubUser=x-access-token -PgithubPassword=[token]
 ```
 
-#### Build and run tests
+### Build and run tests
 To build locally and run the integration tests you can simply run `./gradlew shadowJar` or on windows 
 `gradlew.bat shadowJar`
 
-#### Creating a docker image
+### Creating a docker image
 Creating a docker image should be as simple as `docker build -t pale-2-register .`
 
-#### Running a docker image
+### Running a docker image
 `docker run --rm -it -p 8080:8080 pale-2-register`
+
+## Running in development mode
+To run pale-2-register locally you need a bunch of other services like Vault, a PostgreSQL database, an authentication service, Kafka, Zookeeper etc. 
+
+### docker-compose
+Docker-compose enviroment setup for running local development
+
+Setup for kafka (zookeeper, kafkadminrest, schema-registry, openldap) is borrowed from [navkafka-docker-compose](https://github.com/navikt/navkafka-docker-compose)
+
+### Start the enviroment 
+
+Run this command first
+```docker login -u [BRUKERNAVN] -p [TOKEN] docker.pkg.github.com```
+Change the [BRUKERNAVN] with your github username, and change [TOKEN], with a personal a access token from github
+ that has the scope `read:packages`.
+ 
+```docker-compose -f docker-compose.yml up```
+
+### Add the kafka topics
+```curl --user igroup:itest -X POST "http://localhost:8840/api/v1/topics" -H "accept: application/json" -H "content-type: application/json" -d "{ \"name\": \"privat-syfo-pale2-ok-v1\", \"numPartitions\": 1}" curl --user igroup:itest -X POST "http://localhost:8840/api/v1/topics" -H "accept: application/json" -H "content-type: application/json" -d "{ \"name\": \"privat-syfo-pale2-avvist-v1\", \"numPartitions\": 1}"```
+
+### Runing the app
+1. Create a local run config for pale-2-register pointing to Bootstrap.tk (For run config in intellij see: https://www.jetbrains.com/help/idea/creating-and-editing-run-debug-configurations.html)
+2. Add the contents of dev-stack/dev-runtime-env as runtime environments in the run config.
+3. enjoy develolping localy
+
+## One liner to stop / remove all of Docker containers
+
+```
+docker stop $(docker ps -a -q)
+docker rm $(docker ps -a -q)
+```
+
 
 ### Access to the Postgres database
 

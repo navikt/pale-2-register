@@ -64,7 +64,9 @@ fun main() {
 
     applicationState.ready = true
 
-    RenewVaultService(vaultCredentialService, applicationState).startRenewTasks()
+    if (!env.developmentMode) {
+        RenewVaultService(vaultCredentialService, applicationState).startRenewTasks()
+    }
 
     launchListeners(env, applicationState, consumerConfig, database)
 }
@@ -74,8 +76,10 @@ fun createListener(applicationState: ApplicationState, action: suspend Coroutine
         try {
             action()
         } catch (e: TrackableException) {
-            log.error("En uhåndtert feil oppstod, applikasjonen restarter {}",
-                StructuredArguments.fields(e.loggingMeta), e.cause)
+            log.error(
+                "En uhåndtert feil oppstod, applikasjonen restarter {}",
+                StructuredArguments.fields(e.loggingMeta), e.cause
+            )
         } finally {
             applicationState.alive = false
         }

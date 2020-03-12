@@ -13,7 +13,8 @@ data class Environment(
     val databaseName: String = getEnvVar("DATABASE_NAME", "pale-2-register"),
     override val kafkaBootstrapServers: String = getEnvVar("KAFKA_BOOTSTRAP_SERVERS_URL"),
     val pale2OkTopic: String = getEnvVar("KAFKA_PALE_2_OK_TOPIC", "privat-syfo-pale2-ok-v1"),
-    val pale2AvvistTopic: String = getEnvVar("KAFKA_PALE_2_AVVIST_TOPIC", "privat-syfo-pale2-avvist-v1")
+    val pale2AvvistTopic: String = getEnvVar("KAFKA_PALE_2_AVVIST_TOPIC", "privat-syfo-pale2-avvist-v1"),
+    val developmentMode: Boolean = getEnvVar("DEVELOPMENT_MODE", "false").toBoolean()
 ) : KafkaConfig
 
 data class VaultSecrets(
