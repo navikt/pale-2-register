@@ -6,7 +6,7 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "1.3.1"
+val ktorVersion = "1.3.2"
 val logbackVersion = "1.2.3"
 val logstashEncoderVersion = "5.1"
 val prometheusVersion = "0.8.0"
@@ -23,7 +23,7 @@ val postgresEmbeddedVersion = "0.13.3"
 
 plugins {
     java
-    kotlin("jvm") version "1.3.70"
+    kotlin("jvm") version "1.3.71"
     id("com.github.johnrengelman.shadow") version "5.2.0"
     id("org.jmailen.kotlinter") version "2.2.0"
 }

@@ -125,7 +125,6 @@ read postgresql/prod-fss/creds/pale-2-register-readonly
 
 ```
 
-
 ## Contact us
 ### Code/project related questions can be sent to
 * Joakim Kartveit, `joakim.kartveit@nav.no`
