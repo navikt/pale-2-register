@@ -80,8 +80,8 @@ private fun Connection.opprettBehandlingsutfall(validationResult: ValidationResu
         }
     }
 
-fun Connection.erLegeerklaeringsopplysningerLagret(legeerklaeringid: String) =
-    use { connection ->
+fun DatabaseInterface.erLegeerklaeringsopplysningerLagret(legeerklaeringid: String) =
+    connection.use { connection ->
         connection.prepareStatement(
             """
                 SELECT *
