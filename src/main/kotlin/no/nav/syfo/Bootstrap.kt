@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.ktor.util.KtorExperimentalAPI
+import io.prometheus.client.hotspot.DefaultExports
 import java.time.Duration
 import java.util.Properties
 import kotlinx.coroutines.CoroutineScope
@@ -55,7 +56,9 @@ fun main() {
 
     val applicationEngine = createApplicationEngine(env, applicationState)
 
-    ApplicationServer(applicationEngine).start()
+    DefaultExports.initialize()
+
+    ApplicationServer(applicationEngine, applicationState).start()
 
     val kafkaBaseConfig = loadBaseConfig(env, vaultSecrets).envOverrides()
     val consumerConfig = kafkaBaseConfig.toConsumerConfig(

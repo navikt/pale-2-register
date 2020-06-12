@@ -19,21 +19,21 @@ suspend fun handleRecivedMessage(
     database: Database
 ) {
     wrapExceptions(loggingMeta) {
-        log.info("Mottok ein legereklearing, {}", fields(loggingMeta))
+        log.info("Mottok ein legeerklæring, {}", fields(loggingMeta))
         INCOMING_MESSAGE_COUNTER.inc()
 
-        if (database.connection.erLegeerklaeringsopplysningerLagret(
+        if (database.erLegeerklaeringsopplysningerLagret(
                 legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
             )
         ) {
             log.warn(
-                "Legereklearing med legereklearingsid {}, er allerede lagret i databasen, {}",
+                "Legeerklæring med legeerklæringsid {}, er allerede lagret i databasen, {}",
                 legeerklaeringSak.receivedLegeerklaering.legeerklaering.id, fields(loggingMeta)
             )
         } else {
             database.lagreMottattLegeerklearing(legeerklaeringSak)
             log.info(
-                "Legereklearing lagret i databasen, for {}",
+                "Legeerklæring lagret i databasen, for {}",
                 fields(loggingMeta)
             )
             MESSAGE_STORED_IN_DB_COUNTER.inc()
