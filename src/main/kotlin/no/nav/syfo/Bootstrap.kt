@@ -15,6 +15,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.logstash.logback.argument.StructuredArguments
+import net.logstash.logback.argument.StructuredArguments.fields
 import no.nav.syfo.application.ApplicationServer
 import no.nav.syfo.application.ApplicationState
 import no.nav.syfo.application.createApplicationEngine
@@ -33,6 +34,7 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.LocalDate
 
 val objectMapper: ObjectMapper = ObjectMapper()
     .registerModule(JavaTimeModule())
@@ -61,6 +63,7 @@ fun main() {
     ApplicationServer(applicationEngine, applicationState).start()
 
     val kafkaBaseConfig = loadBaseConfig(env, vaultSecrets).envOverrides()
+    kafkaBaseConfig["auto.offset.reset"] = "none"
     val consumerConfig = kafkaBaseConfig.toConsumerConfig(
         "${env.applicationName}-consumer", valueDeserializer = StringDeserializer::class
     )
@@ -126,13 +129,17 @@ suspend fun blockingApplicationLogic(
                 legeerklaeringId = legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
             )
 
-            handleRecivedMessage(
-                legeerklaeringSak,
-                loggingMeta,
-                database
-            )
+            if (legeerklaeringSak.receivedLegeerklaering.mottattDato.isBefore(LocalDate.of(2020, 11, 5).atStartOfDay())) {
+                log.info("Ignorerer gammel legeerklæring {}", fields(loggingMeta))
+            } else {
+                handleRecivedMessage(
+                    legeerklaeringSak,
+                    loggingMeta,
+                    database
+                )
+            }
         }
 
-        delay(100)
+        delay(1)
     }
 }
