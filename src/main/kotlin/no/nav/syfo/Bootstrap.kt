@@ -8,6 +8,7 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
 import java.time.Duration
+import java.time.LocalDate
 import java.util.Properties
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
@@ -28,13 +29,11 @@ import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.persistering.handleRecivedMessage
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
-import no.nav.syfo.utils.getFileAsString
 import no.nav.syfo.vault.RenewVaultService
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.time.LocalDate
 
 val objectMapper: ObjectMapper = ObjectMapper()
     .registerModule(JavaTimeModule())
@@ -46,10 +45,7 @@ val log: Logger = LoggerFactory.getLogger("no.nav.no.nav.syfo.pale2register")
 @KtorExperimentalAPI
 fun main() {
     val env = Environment()
-    val vaultSecrets = VaultSecrets(
-        serviceuserUsername = getFileAsString(env.serviceuserUsernamePath),
-        serviceuserPassword = getFileAsString(env.serviceuserPasswordPath)
-    )
+    val vaultSecrets = VaultSecrets()
 
     val vaultCredentialService = VaultCredentialService()
     val database = Database(env, vaultCredentialService)
