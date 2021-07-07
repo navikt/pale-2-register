@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: pale-2-register
-  namespace: default
+  namespace: teamsykmelding
   labels:
-    team: teamsykefravr
+    team: teamsykmelding
 spec:
   image: {{ image }}
   replicas:
@@ -22,7 +22,7 @@ spec:
     path: /is_ready
     initialDelay: 30
     periodSeconds: 5
-    timeout: 5
+    timeout: 1
   prometheus:
     enabled: true
     path: /prometheus
@@ -38,17 +38,11 @@ spec:
     paths:
       - kvPath: serviceuser/data/prod/srvpale2reg
         mountPath: /secrets/serviceuser
-      - kvPath: /kv/prod/fss/pale-2-register/default
-        mountPath: /secrets/default
   ingresses:
     - "https://pale-2-register.nais.adeo.no"
   env:
     - name: PALE_2_REGISTER_DB_URL
       value: jdbc:postgresql://A01DBVL011.adeo.no:5432/pale-2-register
-    - name: SERVICE_USER_USERNAME
-      value: /secrets/serviceuser/username
-    - name: SERVICE_USER_PASSWORD
-      value: /secrets/serviceuser/password
     - name: MOUNT_PATH_VAULT
       value: /postgresql/prod-fss
     - name: KAFKA_BOOTSTRAP_SERVERS_URL

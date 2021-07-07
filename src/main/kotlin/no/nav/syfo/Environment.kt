@@ -2,12 +2,11 @@ package no.nav.syfo
 
 import no.nav.syfo.kafka.KafkaConfig
 import no.nav.syfo.kafka.KafkaCredentials
+import no.nav.syfo.utils.getFileAsString
 
 data class Environment(
     val applicationPort: Int = getEnvVar("APPLICATION_PORT", "8080").toInt(),
     val applicationName: String = getEnvVar("NAIS_APP_NAME", "pale-2-register"),
-    val serviceuserUsernamePath: String = getEnvVar("SERVICE_USER_USERNAME"),
-    val serviceuserPasswordPath: String = getEnvVar("SERVICE_USER_PASSWORD"),
     val pale2registerDBURL: String = getEnvVar("PALE_2_REGISTER_DB_URL"),
     val mountPathVault: String = getEnvVar("MOUNT_PATH_VAULT"),
     val databaseName: String = getEnvVar("DATABASE_NAME", "pale-2-register"),
@@ -18,8 +17,8 @@ data class Environment(
 ) : KafkaConfig
 
 data class VaultSecrets(
-    val serviceuserUsername: String,
-    val serviceuserPassword: String
+    val serviceuserUsername: String = getFileAsString("/secrets/serviceuser/username"),
+    val serviceuserPassword: String = getFileAsString("/secrets/serviceuser/password")
 ) : KafkaCredentials {
     override val kafkaUsername: String = serviceuserUsername
     override val kafkaPassword: String = serviceuserPassword

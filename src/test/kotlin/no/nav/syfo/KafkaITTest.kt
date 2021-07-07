@@ -28,8 +28,6 @@ internal class KafkaITTest {
     val config = Environment(
             kafkaBootstrapServers = embeddedEnvironment.brokersURL,
             applicationName = "syfosminfotrygd",
-            serviceuserUsernamePath = "/secrets/serviceuser/username",
-            serviceuserPasswordPath = "/secrets/serviceuser/password",
             mountPathVault = "",
             databaseName = "",
             pale2registerDBURL = "url"
