@@ -1,7 +1,5 @@
 package no.nav.syfo.persistering.db
 
-import java.sql.Connection
-import java.sql.Timestamp
 import no.nav.syfo.db.DatabaseInterface
 import no.nav.syfo.model.Legeerklaering
 import no.nav.syfo.model.LegeerklaeringSak
@@ -9,20 +7,23 @@ import no.nav.syfo.model.ReceivedLegeerklaering
 import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.objectMapper
 import org.postgresql.util.PGobject
+import java.sql.Connection
+import java.sql.Timestamp
 
 fun DatabaseInterface.lagreMottattLegeerklearing(legeerklaeringSak: LegeerklaeringSak) {
     connection.use { connection ->
         connection.opprettLegeerklaeringOpplysninger(legeerklaeringSak.receivedLegeerklaering)
         connection.opprettLegeerklaeringsdokument(legeerklaeringSak.receivedLegeerklaering.legeerklaering)
         connection.opprettBehandlingsutfall(
-            legeerklaeringSak.validationResult, legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+            legeerklaeringSak.validationResult, legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+        )
         connection.commit()
     }
 }
 
 private fun Connection.opprettLegeerklaeringOpplysninger(receivedLegeerklaering: ReceivedLegeerklaering) {
     this.prepareStatement(
-            """
+        """
             INSERT INTO LEGEERKLAERINGOPPLYSNINGER(
                 id,
                 pasient_fnr,
@@ -39,21 +40,21 @@ private fun Connection.opprettLegeerklaeringOpplysninger(receivedLegeerklaering:
                 )
             VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """
-        ).use {
-            it.setString(1, receivedLegeerklaering.legeerklaering.id)
-            it.setString(2, receivedLegeerklaering.legeerklaering.pasient.fnr)
-            it.setString(3, receivedLegeerklaering.pasientAktoerId)
-            it.setString(4, receivedLegeerklaering.personNrLege)
-            it.setString(5, receivedLegeerklaering.legeAktoerId)
-            it.setString(6, receivedLegeerklaering.navLogId)
-            it.setString(7, receivedLegeerklaering.msgId)
-            it.setString(8, receivedLegeerklaering.legekontorOrgNr)
-            it.setString(9, receivedLegeerklaering.legekontorHerId)
-            it.setString(10, receivedLegeerklaering.legekontorReshId)
-            it.setTimestamp(11, Timestamp.valueOf(receivedLegeerklaering.mottattDato))
-            it.setString(12, receivedLegeerklaering.tssid)
-            it.executeUpdate()
-        }
+    ).use {
+        it.setString(1, receivedLegeerklaering.legeerklaering.id)
+        it.setString(2, receivedLegeerklaering.legeerklaering.pasient.fnr)
+        it.setString(3, receivedLegeerklaering.pasientAktoerId)
+        it.setString(4, receivedLegeerklaering.personNrLege)
+        it.setString(5, receivedLegeerklaering.legeAktoerId)
+        it.setString(6, receivedLegeerklaering.navLogId)
+        it.setString(7, receivedLegeerklaering.msgId)
+        it.setString(8, receivedLegeerklaering.legekontorOrgNr)
+        it.setString(9, receivedLegeerklaering.legekontorHerId)
+        it.setString(10, receivedLegeerklaering.legekontorReshId)
+        it.setTimestamp(11, Timestamp.valueOf(receivedLegeerklaering.mottattDato))
+        it.setString(12, receivedLegeerklaering.tssid)
+        it.executeUpdate()
+    }
 }
 
 private fun Connection.opprettLegeerklaeringsdokument(legeerklaering: Legeerklaering) {
@@ -70,15 +71,15 @@ private fun Connection.opprettLegeerklaeringsdokument(legeerklaering: Legeerklae
 
 private fun Connection.opprettBehandlingsutfall(validationResult: ValidationResult, legeerklaeringid: String) {
     this.prepareStatement(
-            """
+        """
                     INSERT INTO BEHANDLINGSUTFALL(id, behandlingsutfall) VALUES (?, ?)
                 """
-        ).use {
-            it.setString(1, legeerklaeringid)
-            it.setObject(2, validationResult.toPGObject())
-            it.executeUpdate()
-        }
+    ).use {
+        it.setString(1, legeerklaeringid)
+        it.setObject(2, validationResult.toPGObject())
+        it.executeUpdate()
     }
+}
 
 fun DatabaseInterface.erLegeerklaeringsopplysningerLagret(legeerklaeringid: String) =
     connection.use { connection ->
