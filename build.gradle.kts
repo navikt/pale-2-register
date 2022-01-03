@@ -6,26 +6,26 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "1.3.2"
-val logbackVersion = "1.2.3"
-val logstashEncoderVersion = "5.1"
-val prometheusVersion = "0.8.0"
-val junitJupiterVersion = "5.6.0"
-val pale2CommonVersion = "1.773adee"
-val jacksonVersion = "2.9.7"
+val ktorVersion = "1.6.7"
+val logbackVersion = "1.2.10"
+val logstashEncoderVersion = "7.0.1"
+val prometheusVersion = "0.14.1"
+val junitJupiterVersion = "5.8.2"
+val pale2CommonVersion = "1.a86680d"
+val jacksonVersion = "2.13.1"
 val vaultJavaDriveVersion = "3.1.0"
-val postgresVersion = "42.2.5"
-val flywayVersion = "5.2.4"
-val hikariVersion = "3.3.0"
-val kafkaEmbeddedVersion = "2.4.0"
-val kluentVersion = "1.49"
-val postgresEmbeddedVersion = "0.13.3"
+val postgresVersion = "42.3.1"
+val flywayVersion = "8.3.0"
+val hikariVersion = "5.0.0"
+val kluentVersion = "1.68"
+val testContainerVersion = "1.16.2"
+val mockkVersion = "1.12.1"
 
 plugins {
     java
-    kotlin("jvm") version "1.3.71"
-    id("com.github.johnrengelman.shadow") version "5.2.0"
-    id("org.jmailen.kotlinter") version "2.2.0"
+    kotlin("jvm") version "1.6.0"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
+    id("org.jmailen.kotlinter") version "3.6.0"
 }
 
 val githubUser: String by project
@@ -33,8 +33,6 @@ val githubPassword: String by project
 
 repositories {
     mavenCentral()
-    jcenter()
-    maven(url = "https://dl.bintray.com/kotlin/ktor")
     maven(url = "https://packages.confluent.io/maven/")
     maven {
         url = uri("https://maven.pkg.github.com/navikt/pale-2-common")
@@ -71,15 +69,13 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 
-    testImplementation("no.nav:kafka-embedded-env:$kafkaEmbeddedVersion")
-
     testImplementation("org.amshove.kluent:kluent:$kluentVersion")
 
+    testImplementation("org.testcontainers:postgresql:$testContainerVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
         exclude(group = "org.eclipse.jetty")
     }
-
-    testImplementation("com.opentable.components:otj-pg-embedded:$postgresEmbeddedVersion")
 }
 
 tasks {
@@ -92,7 +88,7 @@ tasks {
         }
     }
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "12"
+        kotlinOptions.jvmTarget = "17"
     }
 
     withType<ShadowJar> {

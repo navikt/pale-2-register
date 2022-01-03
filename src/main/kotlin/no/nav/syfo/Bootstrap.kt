@@ -5,17 +5,13 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import io.ktor.util.KtorExperimentalAPI
 import io.prometheus.client.hotspot.DefaultExports
-import java.time.Duration
-import java.time.LocalDate
-import java.util.Properties
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.logstash.logback.argument.StructuredArguments
 import net.logstash.logback.argument.StructuredArguments.fields
 import no.nav.syfo.application.ApplicationServer
 import no.nav.syfo.application.ApplicationState
@@ -34,6 +30,9 @@ import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.Duration
+import java.time.LocalDate
+import java.util.Properties
 
 val objectMapper: ObjectMapper = ObjectMapper()
     .registerModule(JavaTimeModule())
@@ -42,7 +41,7 @@ val objectMapper: ObjectMapper = ObjectMapper()
 
 val log: Logger = LoggerFactory.getLogger("no.nav.no.nav.syfo.pale2register")
 
-@KtorExperimentalAPI
+@DelicateCoroutinesApi
 fun main() {
     val env = Environment()
     val vaultSecrets = VaultSecrets()
@@ -73,6 +72,7 @@ fun main() {
     launchListeners(env, applicationState, consumerConfig, database)
 }
 
+@DelicateCoroutinesApi
 fun createListener(applicationState: ApplicationState, action: suspend CoroutineScope.() -> Unit): Job =
     GlobalScope.launch {
         try {
@@ -80,14 +80,14 @@ fun createListener(applicationState: ApplicationState, action: suspend Coroutine
         } catch (e: TrackableException) {
             log.error(
                 "En uhåndtert feil oppstod, applikasjonen restarter {}",
-                StructuredArguments.fields(e.loggingMeta), e.cause
+                fields(e.loggingMeta), e.cause
             )
         } finally {
             applicationState.alive = false
         }
     }
 
-@KtorExperimentalAPI
+@DelicateCoroutinesApi
 fun launchListeners(
     env: Environment,
     applicationState: ApplicationState,
@@ -107,7 +107,6 @@ fun launchListeners(
     }
 }
 
-@KtorExperimentalAPI
 suspend fun blockingApplicationLogic(
     kafkaLegeerklaeringSakconsumer: KafkaConsumer<String, String>,
     applicationState: ApplicationState,

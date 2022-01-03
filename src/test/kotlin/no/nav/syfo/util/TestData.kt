@@ -1,6 +1,5 @@
 package no.nav.syfo.util
 
-import java.time.LocalDateTime
 import no.nav.syfo.model.Arbeidsgiver
 import no.nav.syfo.model.Diagnose
 import no.nav.syfo.model.ForslagTilTiltak
@@ -17,14 +16,16 @@ import no.nav.syfo.model.Signatur
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.Sykdomsopplysninger
 import no.nav.syfo.model.ValidationResult
+import java.time.LocalDateTime
 
 val validationResult = ValidationResult(
-    status = Status.INVALID, ruleHits = listOf(
+    status = Status.INVALID,
+    ruleHits = listOf(
         RuleInfo(
             ruleName = "BEHANDLER_IKKE_GYLDIG_I_HPR",
             messageForUser = "Den som skrev legeerklæringen manglet autorisasjon.",
             messageForSender = "Legeerklæringen kan ikke rettes, det må skrives en ny. Grunnet følgende:" +
-                    "Behandler er ikke gyldig i HPR på konsultasjonstidspunkt",
+                "Behandler er ikke gyldig i HPR på konsultasjonstidspunkt",
             ruleStatus = Status.INVALID
         )
     )

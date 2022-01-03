@@ -8,14 +8,14 @@ import no.nav.syfo.util.dropData
 import no.nav.syfo.util.hentLegeerklearing
 import no.nav.syfo.util.receivedLegeerklaering
 import no.nav.syfo.util.validationResult
-import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldBeEqualTo
 import org.junit.After
 import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
 
 internal class HandleRecivedMessageTest {
 
-    val database = TestDB()
+    val database = TestDB.database
 
     val legeerklaeringSak = LegeerklaeringSak(receivedLegeerklaering, validationResult)
 
@@ -26,7 +26,7 @@ internal class HandleRecivedMessageTest {
 
     @After
     fun teardown() {
-        database.stop()
+        database.connection.dropData()
     }
 
     @Test
@@ -35,14 +35,14 @@ internal class HandleRecivedMessageTest {
 
         database.erLegeerklaeringsopplysningerLagret(
             legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
-        ) shouldEqual true
+        ) shouldBeEqualTo true
     }
 
     @Test
     internal fun `Check that legeerklaering is not already stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
-        database.erLegeerklaeringsopplysningerLagret("23") shouldEqual false
+        database.erLegeerklaeringsopplysningerLagret("23") shouldBeEqualTo false
     }
 
     @Test
@@ -51,6 +51,6 @@ internal class HandleRecivedMessageTest {
 
         val legeerklaeringOpplysninger = database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
-        legeerklaeringOpplysninger.first().pasient_fnr shouldEqual legeerklaeringSak.receivedLegeerklaering.personNrPasient
+        legeerklaeringOpplysninger.first().pasient_fnr shouldBeEqualTo legeerklaeringSak.receivedLegeerklaering.personNrPasient
     }
 }
