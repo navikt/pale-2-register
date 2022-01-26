@@ -24,8 +24,6 @@ import no.nav.syfo.db.Database
 import no.nav.syfo.db.VaultCredentialService
 import no.nav.syfo.gcp.BucketService
 import no.nav.syfo.kafka.aiven.KafkaUtils
-import no.nav.syfo.kafka.envOverrides
-import no.nav.syfo.kafka.loadBaseConfig
 import no.nav.syfo.kafka.toConsumerConfig
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
@@ -40,7 +38,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.time.Duration
-import java.util.Properties
 
 val objectMapper: ObjectMapper = ObjectMapper()
     .registerModule(JavaTimeModule())
@@ -53,8 +50,6 @@ val log: Logger = LoggerFactory.getLogger("no.nav.no.nav.syfo.pale2register")
 @DelicateCoroutinesApi
 fun main() {
     val env = Environment()
-    val vaultSecrets = VaultSecrets()
-
     val vaultCredentialService = VaultCredentialService()
     val database = Database(env, vaultCredentialService)
 
@@ -72,15 +67,9 @@ fun main() {
     val bucketStorage: Storage = StorageOptions.newBuilder().setCredentials(paleStorageCredentials).build().service
     val bucketService = BucketService(env.legeerklaeringBucketName, bucketStorage)
 
-    val kafkaBaseConfig = loadBaseConfig(env, vaultSecrets).envOverrides()
-    kafkaBaseConfig["auto.offset.reset"] = "none"
-    val consumerConfig = kafkaBaseConfig.toConsumerConfig(
-        "${env.applicationName}-consumer", valueDeserializer = StringDeserializer::class
-    )
-
     val aivenConfig = KafkaUtils.getAivenKafkaConfig().toConsumerConfig(
         "${env.applicationName}-consumer", valueDeserializer = StringDeserializer::class
-    ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "latest" }
+    ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 
     applicationState.ready = true
@@ -88,8 +77,7 @@ fun main() {
     if (!env.developmentMode) {
         RenewVaultService(vaultCredentialService, applicationState).startRenewTasks()
     }
-
-    launchListeners(env, applicationState, consumerConfig, aivenKafkaConsumer, bucketService, database)
+    launchListeners(env, applicationState, aivenKafkaConsumer, bucketService, database)
 }
 
 @DelicateCoroutinesApi
@@ -111,20 +99,13 @@ fun createListener(applicationState: ApplicationState, action: suspend Coroutine
 fun launchListeners(
     env: Environment,
     applicationState: ApplicationState,
-    consumerProperties: Properties,
     aivenKafkaConsumer: KafkaConsumer<String, String>,
     bucketService: BucketService,
     database: Database
 ) {
     createListener(applicationState) {
-        val kafkaLegeerklaeringSakconsumer = KafkaConsumer<String, String>(consumerProperties)
-        kafkaLegeerklaeringSakconsumer.subscribe(listOf(env.pale2OkTopic, env.pale2AvvistTopic))
-        applicationState.ready = true
-
         aivenKafkaConsumer.subscribe(listOf(env.legeerklaringTopic))
-
         blockingApplicationLogic(
-            kafkaLegeerklaeringSakconsumer,
             aivenKafkaConsumer,
             bucketService,
             applicationState,
@@ -134,19 +115,13 @@ fun launchListeners(
 }
 
 suspend fun blockingApplicationLogic(
-    kafkaLegeerklaeringSakconsumer: KafkaConsumer<String, String>,
     aivenKafkaConsumer: KafkaConsumer<String, String>,
     bucketService: BucketService,
     applicationState: ApplicationState,
     database: Database
 ) {
     while (applicationState.ready) {
-        kafkaLegeerklaeringSakconsumer.poll(Duration.ofSeconds(10)).forEach { consumerRecord ->
-            val legeerklaeringSak: LegeerklaeringSak = objectMapper.readValue(consumerRecord.value())
-            handleLegeerklaringSak(legeerklaeringSak, database)
-        }
         aivenKafkaConsumer.poll(Duration.ofSeconds(10))
-            //.filter { !(it.headers().any { header -> header.value().contentEquals("macgyver".toByteArray()) }) }
             .forEach { consumerRecord ->
                 val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage = objectMapper.readValue(consumerRecord.value())
                 val receivedLegeerklaering =
