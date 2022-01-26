@@ -50,7 +50,5 @@ spec:
       value: jdbc:postgresql://b27dbvl013.preprod.local:5432/pale-2-register
     - name: MOUNT_PATH_VAULT
       value: /postgresql/preprod-fss
-    - name: KAFKA_BOOTSTRAP_SERVERS_URL
-      value: SSL://b27apvl00045.preprod.local:8443,SSL://b27apvl00046.preprod.local:8443,SSL://b27apvl00047.preprod.local:8443
     - name: PALE_BUCKET_NAME
       value: teamsykmelding-pale2-legeerklaring-bucket-dev
