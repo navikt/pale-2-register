@@ -147,16 +147,19 @@ suspend fun blockingApplicationLogic(
         }
     }
 
-    aivenKafkaConsumer.poll(Duration.ofSeconds(10)).forEach { consumerRecord ->
-        val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage = objectMapper.readValue(consumerRecord.value())
-        val receivedLegeerklaering = bucketService.getLegeerklaring(legeerklaeringKafkaMessage.legeerklaeringObjectId)
-        val legeerklaeringSak = LegeerklaeringSak(
-            receivedLegeerklaering,
-            legeerklaeringKafkaMessage.validationResult,
-            legeerklaeringKafkaMessage.vedlegg
-        )
-        handleLegeerklaringSak(legeerklaeringSak, database)
-    }
+    aivenKafkaConsumer.poll(Duration.ofSeconds(10))
+        .filter { !(it.headers().any { header -> header.value().contentEquals("macgyver".toByteArray()) }) }
+        .forEach { consumerRecord ->
+            val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage = objectMapper.readValue(consumerRecord.value())
+            val receivedLegeerklaering =
+                bucketService.getLegeerklaring(legeerklaeringKafkaMessage.legeerklaeringObjectId)
+            val legeerklaeringSak = LegeerklaeringSak(
+                receivedLegeerklaering,
+                legeerklaeringKafkaMessage.validationResult,
+                legeerklaeringKafkaMessage.vedlegg
+            )
+            handleLegeerklaringSak(legeerklaeringSak, database)
+        }
 }
 
 private suspend fun handleLegeerklaringSak(
