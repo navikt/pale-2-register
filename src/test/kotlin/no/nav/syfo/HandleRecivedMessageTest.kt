@@ -17,7 +17,7 @@ internal class HandleRecivedMessageTest {
 
     val database = TestDB.database
 
-    val legeerklaeringSak = LegeerklaeringSak(receivedLegeerklaering, validationResult)
+    val legeerklaeringSak = LegeerklaeringSak(receivedLegeerklaering, validationResult, emptyList())
 
     @BeforeEach
     fun setup() {
