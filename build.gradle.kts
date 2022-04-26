@@ -6,26 +6,28 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "1.6.7"
-val logbackVersion = "1.2.10"
-val logstashEncoderVersion = "7.0.1"
-val prometheusVersion = "0.14.1"
+val ktorVersion = "2.0.0"
+val logbackVersion = "1.2.11"
+val logstashEncoderVersion = "7.1.1"
+val prometheusVersion = "0.15.0"
 val junitJupiterVersion = "5.8.2"
-val pale2CommonVersion = "1.b61e3d4"
-val jacksonVersion = "2.13.1"
+val pale2CommonVersion = "1.e4cad79"
+val jacksonVersion = "2.13.2"
+val jacksonPatchVersion = "2.13.2.2"
+val jacksonBomVersion = "2.13.2.20220328"
 val vaultJavaDriveVersion = "3.1.0"
-val postgresVersion = "42.3.2"
-val flywayVersion = "8.4.3"
+val postgresVersion = "42.3.4"
+val flywayVersion = "8.5.9"
 val hikariVersion = "5.0.1"
 val kluentVersion = "1.68"
-val testContainerVersion = "1.16.3"
-val mockkVersion = "1.12.2"
-val kotlinVersion = "1.6.0"
-val googleCloudStorageVersion = "2.3.0"
+val testContainerVersion = "1.17.1"
+val mockkVersion = "1.12.3"
+val kotlinVersion = "1.6.20"
+val googleCloudStorageVersion = "2.6.1"
 
 plugins {
     java
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.20"
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("org.jmailen.kotlinter") version "3.6.0"
 }
@@ -47,8 +49,8 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
+    implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
 
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
@@ -63,6 +65,8 @@ dependencies {
 
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson:jackson-bom:$jacksonBomVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonPatchVersion")
 
     implementation("no.nav.syfo:pale-2-common-models:$pale2CommonVersion")
     implementation("no.nav.syfo:pale-2-common-kafka:$pale2CommonVersion")
