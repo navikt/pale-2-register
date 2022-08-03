@@ -76,7 +76,7 @@ Setup for kafka (zookeeper, kafkadminrest, schema-registry, openldap) is borrowe
 
 Run this command first
 ```docker login -u [BRUKERNAVN] -p [TOKEN] docker.pkg.github.com```
-Change the [BRUKERNAVN] with your github username, and change [TOKEN], with a personal a access token from github
+Change the [BRUKERNAVN] with your GitHub username, and change [TOKEN], with a personal a access token from github
  that has the scope `read:packages`.
  
 ```docker-compose -f docker-compose.yml up```
@@ -89,7 +89,7 @@ Change the [BRUKERNAVN] with your github username, and change [TOKEN], with a pe
 2. Add the contents of dev-stack/dev-runtime-env as runtime environments in the run config.
 3. enjoy develolping localy
 
-## One liner to stop / remove all of Docker containers
+## One liner to stop / remove all Docker containers
 
 ```
 docker stop $(docker ps -a -q)
@@ -123,3 +123,14 @@ Prod credentials:
 read postgresql/prod-fss/creds/pale-2-register-readonly
 
 ```
+
+### Upgrading the gradle wrapper
+Find the newest version of gradle here: https://gradle.org/releases/ Then run this command:
+
+```./gradlew wrapper --gradle-version $gradleVersjon```
+
+### Inquiries
+Questions related to the code or the project can be asked as issues here on GitHub
+
+### For NAV employees
+We are available at the Slack channel #team-sykmelding
