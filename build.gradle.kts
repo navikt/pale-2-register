@@ -11,7 +11,7 @@ val logbackVersion = "1.2.11"
 val logstashEncoderVersion = "7.2"
 val prometheusVersion = "0.16.0"
 val junitJupiterVersion = "5.8.2"
-val pale2CommonVersion = "1.e4cad79"
+val pale2CommonVersion = "1.19e8b45"
 val jacksonVersion = "2.13.3"
 val vaultJavaDriveVersion = "5.1.0"
 val postgresVersion = "42.3.6"
@@ -63,8 +63,6 @@ dependencies {
 
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("com.fasterxml.jackson:jackson-bom:$jacksonVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 
     implementation("no.nav.syfo:pale-2-common-models:$pale2CommonVersion")
     implementation("no.nav.syfo:pale-2-common-kafka:$pale2CommonVersion")

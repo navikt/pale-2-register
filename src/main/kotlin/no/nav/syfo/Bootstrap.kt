@@ -59,8 +59,6 @@ fun main() {
 
     DefaultExports.initialize()
 
-    ApplicationServer(applicationEngine, applicationState).start()
-
     val paleStorageCredentials: Credentials =
         GoogleCredentials.fromStream(FileInputStream("/var/run/secrets/nais.io/vault/pale2-google-creds.json"))
 
@@ -72,12 +70,12 @@ fun main() {
     ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 
-    applicationState.ready = true
-
     if (!env.developmentMode) {
         RenewVaultService(vaultCredentialService, applicationState).startRenewTasks()
     }
     launchListeners(env, applicationState, aivenKafkaConsumer, bucketService, database)
+
+    ApplicationServer(applicationEngine, applicationState).start()
 }
 
 @DelicateCoroutinesApi
@@ -91,6 +89,7 @@ fun createListener(applicationState: ApplicationState, action: suspend Coroutine
                 fields(e.loggingMeta), e.cause
             )
         } finally {
+            applicationState.ready = false
             applicationState.alive = false
         }
     }
