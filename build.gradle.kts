@@ -6,28 +6,26 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "2.0.0"
+val ktorVersion = "2.0.3"
 val logbackVersion = "1.2.11"
-val logstashEncoderVersion = "7.1.1"
-val prometheusVersion = "0.15.0"
+val logstashEncoderVersion = "7.2"
+val prometheusVersion = "0.16.0"
 val junitJupiterVersion = "5.8.2"
 val pale2CommonVersion = "1.e4cad79"
-val jacksonVersion = "2.13.2"
-val jacksonPatchVersion = "2.13.2.2"
-val jacksonBomVersion = "2.13.2.20220328"
-val vaultJavaDriveVersion = "3.1.0"
-val postgresVersion = "42.3.4"
-val flywayVersion = "8.5.9"
+val jacksonVersion = "2.13.3"
+val vaultJavaDriveVersion = "5.1.0"
+val postgresVersion = "42.3.6"
+val flywayVersion = "8.5.12"
 val hikariVersion = "5.0.1"
 val kluentVersion = "1.68"
-val testContainerVersion = "1.17.1"
-val mockkVersion = "1.12.3"
-val kotlinVersion = "1.6.20"
-val googleCloudStorageVersion = "2.6.1"
+val testContainerVersion = "1.17.3"
+val mockkVersion = "1.12.4"
+val kotlinVersion = "1.7.10"
+val googleCloudStorageVersion = "2.10.0"
 
 plugins {
     java
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("org.jmailen.kotlinter") version "3.6.0"
 }
@@ -65,8 +63,8 @@ dependencies {
 
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("com.fasterxml.jackson:jackson-bom:$jacksonBomVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonPatchVersion")
+    implementation("com.fasterxml.jackson:jackson-bom:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 
     implementation("no.nav.syfo:pale-2-common-models:$pale2CommonVersion")
     implementation("no.nav.syfo:pale-2-common-kafka:$pale2CommonVersion")
