@@ -6,6 +6,19 @@ metadata:
   labels:
     team: teamsykmelding
 spec:
+  gcp:
+    sqlInstances:
+      - name: pale-2-register-instance
+        type: POSTGRES_14
+        diskSize: 10
+        databases:
+          - name: pale-2-register
+            envVarPrefix: DB
+        diskAutoresize: true
+        highAvailability: false
+        diskType: SSD
+        insights:
+          enabled: true
   image: {{ image }}
   replicas:
     min: 1
@@ -13,19 +26,19 @@ spec:
     cpuThresholdPercentage: 90
   port: 8080
   liveness:
-    path: /is_alive
+    path: /internal/is_alive
     initialDelay: 10
     timeout: 5
     periodSeconds: 5
     failureThreshold: 30
   readiness:
-    path: /is_ready
+    path: /internal/is_ready
     initialDelay: 30
     periodSeconds: 5
     timeout: 1
   prometheus:
     enabled: true
-    path: /prometheus
+    path: /internal/prometheus
   resources:
     limits:
       cpu: 500m
@@ -34,21 +47,14 @@ spec:
       cpu: 400m
       memory: 768Mi
   vault:
-    enabled: true
-    paths:
-      - kvPath: serviceuser/data/dev/srvpale2reg
-        mountPath: /secrets/serviceuser
-      - kvPath: /kv/preprod/fss/pale-2-register/teamsykmelding
-        mountPath: /var/run/secrets/nais.io/vault
+    enabled: false
+  filesFrom:
+    - secret: pale2-google-creds
   webproxy: true
   kafka:
     pool: nav-dev
   ingresses:
-    - "https://pale-2-register.nais.preprod.local"
+    - "https://pale-2-register.dev.intern.nav.no"
   env:
-    - name: PALE_2_REGISTER_DB_URL
-      value: jdbc:postgresql://b27dbvl013.preprod.local:5432/pale-2-register
-    - name: MOUNT_PATH_VAULT
-      value: /postgresql/preprod-fss
     - name: PALE_BUCKET_NAME
       value: teamsykmelding-pale2-legeerklaring-bucket-dev

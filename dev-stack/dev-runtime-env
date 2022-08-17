@@ -1,1 +1,0 @@
-PALE_2_REGISTER_DB_URL=jdbc:postgresql://localhost/;MOUNT_PATH_VAULT=secret;KAFKA_BOOTSTRAP_SERVERS_URL=localhost:9092;SERVICE_USER_USERNAME=dev-stack/secrets/serviceuser/username;SERVICE_USER_PASSWORD=dev-stack/secrets/serviceuser/password;VAULT_ADDR=http://localhost:8200;VAULT_TOKEN=supersekret;DEVELOPMENT_MODE=true
