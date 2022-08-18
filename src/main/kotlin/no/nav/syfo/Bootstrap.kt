@@ -67,9 +67,9 @@ fun main() {
     ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 
-    /*
+
     launchListeners(env, applicationState, aivenKafkaConsumer, bucketService, database)
-    */
+
 
     ApplicationServer(applicationEngine, applicationState).start()
 }
