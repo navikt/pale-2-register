@@ -1,3 +1,0 @@
-{
-  "policy1": "path \"secret/*\" { policy = \"write\" }"
-}

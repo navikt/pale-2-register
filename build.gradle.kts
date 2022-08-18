@@ -6,20 +6,19 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "2.0.3"
+val ktorVersion = "2.1.0"
 val logbackVersion = "1.2.11"
 val logstashEncoderVersion = "7.2"
 val prometheusVersion = "0.16.0"
-val junitJupiterVersion = "5.8.2"
+val junitJupiterVersion = "5.9.0"
 val pale2CommonVersion = "1.19e8b45"
 val jacksonVersion = "2.13.3"
-val vaultJavaDriveVersion = "3.1.0"
-val postgresVersion = "42.3.6"
-val flywayVersion = "8.5.12"
+val postgresVersion = "42.4.1"
+val flywayVersion = "9.0.4"
 val hikariVersion = "5.0.1"
 val kluentVersion = "1.68"
 val testContainerVersion = "1.17.3"
-val mockkVersion = "1.12.4"
+val mockkVersion = "1.12.5"
 val kotlinVersion = "1.7.10"
 val googleCloudStorageVersion = "2.10.0"
 
@@ -35,7 +34,6 @@ val githubPassword: String by project
 
 repositories {
     mavenCentral()
-    maven(url = "https://packages.confluent.io/maven/")
     maven {
         url = uri("https://maven.pkg.github.com/navikt/pale-2-common")
         credentials {
@@ -53,7 +51,6 @@ dependencies {
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
-    implementation("com.bettercloud:vault-java-driver:$vaultJavaDriveVersion")
 
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
@@ -103,9 +100,10 @@ tasks {
     }
 
     withType<Test> {
-        useJUnit()
+        useJUnitPlatform {}
         testLogging {
-            showStandardStreams = true
+            showStackTraces = true
+            exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
     }
 

@@ -21,7 +21,6 @@ import no.nav.syfo.application.ApplicationServer
 import no.nav.syfo.application.ApplicationState
 import no.nav.syfo.application.createApplicationEngine
 import no.nav.syfo.db.Database
-import no.nav.syfo.db.VaultCredentialService
 import no.nav.syfo.gcp.BucketService
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toConsumerConfig
@@ -30,7 +29,6 @@ import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
 import no.nav.syfo.persistering.handleRecivedMessage
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
-import no.nav.syfo.vault.RenewVaultService
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -50,8 +48,7 @@ val log: Logger = LoggerFactory.getLogger("no.nav.no.nav.syfo.pale2register")
 @DelicateCoroutinesApi
 fun main() {
     val env = Environment()
-    val vaultCredentialService = VaultCredentialService()
-    val database = Database(env, vaultCredentialService)
+    val database = Database(env)
 
     val applicationState = ApplicationState()
 
@@ -60,7 +57,7 @@ fun main() {
     DefaultExports.initialize()
 
     val paleStorageCredentials: Credentials =
-        GoogleCredentials.fromStream(FileInputStream("/var/run/secrets/nais.io/vault/pale2-google-creds.json"))
+        GoogleCredentials.fromStream(FileInputStream("/var/run/secrets/pale2-google-creds.json"))
 
     val bucketStorage: Storage = StorageOptions.newBuilder().setCredentials(paleStorageCredentials).build().service
     val bucketService = BucketService(env.legeerklaeringBucketName, bucketStorage)
@@ -70,10 +67,9 @@ fun main() {
     ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 
-    if (!env.developmentMode) {
-        RenewVaultService(vaultCredentialService, applicationState).startRenewTasks()
-    }
+    /*
     launchListeners(env, applicationState, aivenKafkaConsumer, bucketService, database)
+    */
 
     ApplicationServer(applicationEngine, applicationState).start()
 }
@@ -122,7 +118,8 @@ suspend fun blockingApplicationLogic(
     while (applicationState.ready) {
         aivenKafkaConsumer.poll(Duration.ofSeconds(10))
             .forEach { consumerRecord ->
-                val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage = objectMapper.readValue(consumerRecord.value())
+                val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage =
+                    objectMapper.readValue(consumerRecord.value())
                 val receivedLegeerklaering =
                     bucketService.getLegeerklaring(legeerklaeringKafkaMessage.legeerklaeringObjectId)
                 val legeerklaeringSak = LegeerklaeringSak(

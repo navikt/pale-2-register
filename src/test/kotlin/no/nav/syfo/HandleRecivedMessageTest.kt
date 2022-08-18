@@ -9,23 +9,17 @@ import no.nav.syfo.util.hentLegeerklearing
 import no.nav.syfo.util.receivedLegeerklaering
 import no.nav.syfo.util.validationResult
 import org.amshove.kluent.shouldBeEqualTo
-import org.junit.After
-import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 internal class HandleRecivedMessageTest {
 
-    val database = TestDB.database
+    private val database = TestDB.database
 
     val legeerklaeringSak = LegeerklaeringSak(receivedLegeerklaering, validationResult, emptyList())
 
     @BeforeEach
     fun setup() {
-        database.connection.dropData()
-    }
-
-    @After
-    fun teardown() {
         database.connection.dropData()
     }
 
