@@ -26,6 +26,7 @@ import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toConsumerConfig
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
+import no.nav.syfo.persistering.db.slettLegeerklaering
 import no.nav.syfo.persistering.handleRecivedMessage
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
@@ -116,16 +117,23 @@ suspend fun blockingApplicationLogic(
     while (applicationState.ready) {
         aivenKafkaConsumer.poll(Duration.ofSeconds(10))
             .forEach { consumerRecord ->
-                val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage =
-                    objectMapper.readValue(consumerRecord.value())
-                val receivedLegeerklaering =
-                    bucketService.getLegeerklaring(legeerklaeringKafkaMessage.legeerklaeringObjectId)
-                val legeerklaeringSak = LegeerklaeringSak(
-                    receivedLegeerklaering,
-                    legeerklaeringKafkaMessage.validationResult,
-                    legeerklaeringKafkaMessage.vedlegg
-                )
-                handleLegeerklaringSak(legeerklaeringSak, database)
+                if (consumerRecord.value() == null) {
+                    val legeerklaeringId = consumerRecord.key()
+                    log.info("Mottatt tombstone-melding for legeerklæring med id $legeerklaeringId")
+                    database.slettLegeerklaering(legeerklaeringId)
+                    log.info("Slettet legeerklæring med id $legeerklaeringId")
+                } else {
+                    val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage =
+                        objectMapper.readValue(consumerRecord.value())
+                    val receivedLegeerklaering =
+                        bucketService.getLegeerklaring(legeerklaeringKafkaMessage.legeerklaeringObjectId)
+                    val legeerklaeringSak = LegeerklaeringSak(
+                        receivedLegeerklaering,
+                        legeerklaeringKafkaMessage.validationResult,
+                        legeerklaeringKafkaMessage.vedlegg
+                    )
+                    handleLegeerklaringSak(legeerklaeringSak, database)
+                }
             }
     }
 }

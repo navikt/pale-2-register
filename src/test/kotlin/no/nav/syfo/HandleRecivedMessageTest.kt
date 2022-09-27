@@ -3,6 +3,7 @@ package no.nav.syfo
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
 import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
+import no.nav.syfo.persistering.db.slettLegeerklaering
 import no.nav.syfo.util.TestDB
 import no.nav.syfo.util.dropData
 import no.nav.syfo.util.hentLegeerklearing
@@ -46,5 +47,19 @@ internal class HandleRecivedMessageTest {
         val legeerklaeringOpplysninger = database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
         legeerklaeringOpplysninger.first().pasient_fnr shouldBeEqualTo legeerklaeringSak.receivedLegeerklaering.personNrPasient
+    }
+
+    @Test
+    internal fun `Legeerklaering slettes fra db`() {
+        database.lagreMottattLegeerklearing(legeerklaeringSak)
+        database.erLegeerklaeringsopplysningerLagret(
+            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+        ) shouldBeEqualTo true
+
+        database.slettLegeerklaering(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+
+        database.erLegeerklaeringsopplysningerLagret(
+            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+        ) shouldBeEqualTo false
     }
 }
