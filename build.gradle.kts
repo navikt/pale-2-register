@@ -7,7 +7,7 @@ version = "1.0.0"
 
 
 val ktorVersion = "2.1.1"
-val logbackVersion = "1.4.0"
+val logbackVersion = "1.4.1"
 val logstashEncoderVersion = "7.2"
 val prometheusVersion = "0.16.0"
 val junitJupiterVersion = "5.9.0"
@@ -20,7 +20,7 @@ val kluentVersion = "1.68"
 val testContainerVersion = "1.17.3"
 val mockkVersion = "1.12.8"
 val kotlinVersion = "1.7.10"
-val googleCloudStorageVersion = "2.11.3"
+val googleCloudStorageVersion = "2.12.0"
 
 plugins {
     java

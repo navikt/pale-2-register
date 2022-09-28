@@ -95,6 +95,24 @@ fun DatabaseInterface.erLegeerklaeringsopplysningerLagret(legeerklaeringid: Stri
         }
     }
 
+fun DatabaseInterface.slettLegeerklaering(legeerklaeringId: String) {
+    connection.use { connection ->
+        connection.slettLegeerklaering(legeerklaeringId)
+        connection.commit()
+    }
+}
+
+private fun Connection.slettLegeerklaering(legeerklaeringid: String) {
+    this.prepareStatement(
+        """
+                    DELETE FROM LEGEERKLAERINGOPPLYSNINGER WHERE id=?;
+                """
+    ).use {
+        it.setString(1, legeerklaeringid)
+        it.executeUpdate()
+    }
+}
+
 fun Legeerklaering.toPGObject() = PGobject().also {
     it.type = "json"
     it.value = objectMapper.writeValueAsString(this)
