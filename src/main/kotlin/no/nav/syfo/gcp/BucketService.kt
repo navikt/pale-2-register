@@ -22,4 +22,12 @@ class BucketService(
         log.info("Har hentet legeerklæring for $objectId")
         return objectMapper.readValue(content)
     }
+
+    fun deleteLegeerklaring(objectId: String) {
+        val deleteLegeerklaring = storage.delete(name, objectId)
+        if (!deleteLegeerklaring) {
+            log.error("Feilet å slette legeerklæring fra bucket: $objectId")
+            throw RuntimeException("Feilet å slette legeerklæring fra bucket: l $objectId")
+        }
+    }
 }

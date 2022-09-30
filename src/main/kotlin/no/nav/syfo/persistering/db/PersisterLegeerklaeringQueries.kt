@@ -113,6 +113,25 @@ private fun Connection.slettLegeerklaering(legeerklaeringid: String) {
     }
 }
 
+fun DatabaseInterface.hentMsgId(legeerklaeringId: String): String? {
+    connection.use { connection ->
+        connection.prepareStatement(
+            """
+                 SELECT msg_id FROM LEGEERKLAERINGOPPLYSNINGER WHERE id=?;
+                """
+        ).use {
+            it.setString(1, legeerklaeringId)
+            it.executeQuery().use {
+                when (it.next()) {
+                    true -> return it.getString("msg_id")
+                    else -> return null
+                }
+            }
+
+        }
+    }
+}
+
 fun Legeerklaering.toPGObject() = PGobject().also {
     it.type = "json"
     it.value = objectMapper.writeValueAsString(this)
