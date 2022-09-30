@@ -117,13 +117,16 @@ fun DatabaseInterface.hentMsgId(legeerklaeringId: String): String? {
     connection.use { connection ->
         connection.prepareStatement(
             """
-                 SELECT msg_id FROM LEGEERKLAERINGOPPLYSNINGER WHERE id=?;
+                 SELECT msg_id 
+                 FROM LEGEERKLAERINGOPPLYSNINGER 
+                 WHERE id=?;
                 """
-        ).use {
-            it.setString(1, legeerklaeringId)
-            it.executeQuery().use {
-                when (it.next()) {
-                    true -> return it.getString("msg_id")
+        ).use { ps ->
+            ps.setString(1, legeerklaeringId)
+            ps.executeQuery().use { rs ->
+                rs.next()
+                when (rs.next()) {
+                    true -> return rs.getString("msg_id")
                     else -> return null
                 }
             }
