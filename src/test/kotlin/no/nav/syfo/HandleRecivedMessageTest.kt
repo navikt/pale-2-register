@@ -2,6 +2,7 @@ package no.nav.syfo
 
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
+import no.nav.syfo.persistering.db.hentMsgId
 import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
 import no.nav.syfo.persistering.db.slettLegeerklaering
 import no.nav.syfo.util.TestDB
@@ -44,7 +45,8 @@ internal class HandleRecivedMessageTest {
     internal fun `Check legeerklaering is stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
-        val legeerklaeringOpplysninger = database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+        val legeerklaeringOpplysninger =
+            database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
         legeerklaeringOpplysninger.first().pasient_fnr shouldBeEqualTo legeerklaeringSak.receivedLegeerklaering.personNrPasient
     }
@@ -56,10 +58,14 @@ internal class HandleRecivedMessageTest {
             legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
         ) shouldBeEqualTo true
 
+        database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id) shouldBeEqualTo
+                receivedLegeerklaering.msgId
+
         database.slettLegeerklaering(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
         database.erLegeerklaeringsopplysningerLagret(
             legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
         ) shouldBeEqualTo false
+
     }
 }

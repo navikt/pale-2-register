@@ -37,6 +37,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.time.Duration
+import no.nav.syfo.persistering.db.hentMsgId
 
 val objectMapper: ObjectMapper = ObjectMapper()
     .registerModule(JavaTimeModule())
@@ -120,8 +121,14 @@ suspend fun blockingApplicationLogic(
                 if (consumerRecord.value() == null) {
                     val legeerklaeringId = consumerRecord.key()
                     log.info("Mottatt tombstone-melding for legeerklæring med id $legeerklaeringId")
-                    database.slettLegeerklaering(legeerklaeringId)
-                    log.info("Slettet legeerklæring med id $legeerklaeringId")
+                    val msgId = database.hentMsgId(legeerklaeringId)
+                    if (msgId.isNullOrEmpty()) {
+                        log.error("Slettet ikkje legeerklæring grunnet: fant ikkje msgId for legeerklæring med id $legeerklaeringId")
+                    } else {
+                        bucketService.deleteLegeerklaring(msgId)
+                        database.slettLegeerklaering(legeerklaeringId)
+                        log.info("Slettet legeerklæring med id $legeerklaeringId")
+                    }
                 } else {
                     val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage =
                         objectMapper.readValue(consumerRecord.value())
