@@ -125,8 +125,8 @@ suspend fun blockingApplicationLogic(
                     if (msgId.isNullOrEmpty()) {
                         log.error("Slettet ikkje legeerklæring grunnet: fant ikkje msgId for legeerklæring med id $legeerklaeringId")
                     } else {
-                        database.slettLegeerklaering(legeerklaeringId)
                         bucketService.deleteLegeerklaring(msgId)
+                        database.slettLegeerklaering(legeerklaeringId)
                         log.info("Slettet legeerklæring med id $legeerklaeringId")
                     }
                 } else {
