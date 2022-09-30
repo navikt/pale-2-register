@@ -121,12 +121,11 @@ fun DatabaseInterface.hentMsgId(legeerklaeringId: String): String? {
                  FROM LEGEERKLAERINGOPPLYSNINGER 
                  WHERE id=?;
                 """
-        ).use { ps ->
-            ps.setString(1, legeerklaeringId)
-            ps.executeQuery().use { rs ->
-                rs.next()
-                when (rs.next()) {
-                    true -> return rs.getString("msg_id")
+        ).use { preparedStatement ->
+            preparedStatement.setString(1, legeerklaeringId)
+            preparedStatement.executeQuery().use {resultSet ->
+                when (resultSet.next()) {
+                    true -> return resultSet.getString("msg_id")
                     else -> return null
                 }
             }
