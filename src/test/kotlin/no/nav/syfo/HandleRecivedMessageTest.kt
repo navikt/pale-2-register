@@ -59,13 +59,12 @@ internal class HandleRecivedMessageTest {
         ) shouldBeEqualTo true
 
         database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id) shouldBeEqualTo
-                receivedLegeerklaering.msgId
+            receivedLegeerklaering.msgId
 
         database.slettLegeerklaering(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
         database.erLegeerklaeringsopplysningerLagret(
             legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
         ) shouldBeEqualTo false
-
     }
 }

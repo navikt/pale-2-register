@@ -26,6 +26,7 @@ import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toConsumerConfig
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
+import no.nav.syfo.persistering.db.hentMsgId
 import no.nav.syfo.persistering.db.slettLegeerklaering
 import no.nav.syfo.persistering.handleRecivedMessage
 import no.nav.syfo.utils.LoggingMeta
@@ -37,7 +38,6 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.FileInputStream
 import java.time.Duration
-import no.nav.syfo.persistering.db.hentMsgId
 
 val objectMapper: ObjectMapper = ObjectMapper()
     .registerModule(JavaTimeModule())
@@ -65,7 +65,8 @@ fun main() {
     val bucketService = BucketService(env.legeerklaeringBucketName, bucketStorage)
 
     val aivenConfig = KafkaUtils.getAivenKafkaConfig().toConsumerConfig(
-        "${env.applicationName}-consumer", valueDeserializer = StringDeserializer::class
+        "${env.applicationName}-consumer",
+        valueDeserializer = StringDeserializer::class
     ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 
@@ -82,7 +83,8 @@ fun createListener(applicationState: ApplicationState, action: suspend Coroutine
         } catch (e: TrackableException) {
             log.error(
                 "En uhåndtert feil oppstod, applikasjonen restarter {}",
-                fields(e.loggingMeta), e.cause
+                fields(e.loggingMeta),
+                e.cause
             )
         } finally {
             applicationState.ready = false
