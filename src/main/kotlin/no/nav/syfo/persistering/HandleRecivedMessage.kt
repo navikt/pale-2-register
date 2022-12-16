@@ -26,7 +26,8 @@ suspend fun handleRecivedMessage(
         ) {
             log.warn(
                 "Legeerklæring med legeerklæringsid {}, er allerede lagret i databasen, {}",
-                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id, fields(loggingMeta)
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
+                fields(loggingMeta)
             )
         } else {
             database.lagreMottattLegeerklearing(legeerklaeringSak)

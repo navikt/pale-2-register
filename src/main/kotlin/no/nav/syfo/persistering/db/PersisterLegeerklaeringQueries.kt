@@ -15,7 +15,8 @@ fun DatabaseInterface.lagreMottattLegeerklearing(legeerklaeringSak: Legeerklaeri
         connection.opprettLegeerklaeringOpplysninger(legeerklaeringSak.receivedLegeerklaering)
         connection.opprettLegeerklaeringsdokument(legeerklaeringSak.receivedLegeerklaering.legeerklaering)
         connection.opprettBehandlingsutfall(
-            legeerklaeringSak.validationResult, legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            legeerklaeringSak.validationResult,
+            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
         )
         connection.commit()
     }
@@ -123,13 +124,12 @@ fun DatabaseInterface.hentMsgId(legeerklaeringId: String): String? {
                 """
         ).use { preparedStatement ->
             preparedStatement.setString(1, legeerklaeringId)
-            preparedStatement.executeQuery().use {resultSet ->
+            preparedStatement.executeQuery().use { resultSet ->
                 when (resultSet.next()) {
                     true -> return resultSet.getString("msg_id")
                     else -> return null
                 }
             }
-
         }
     }
 }
