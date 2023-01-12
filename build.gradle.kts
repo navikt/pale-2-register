@@ -6,7 +6,7 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "2.2.1"
+val ktorVersion = "2.2.2"
 val logbackVersion = "1.4.5"
 val logstashEncoderVersion = "7.2"
 val prometheusVersion = "0.16.0"
@@ -19,13 +19,13 @@ val hikariVersion = "5.0.1"
 val kluentVersion = "1.72"
 val testContainerVersion = "1.17.6"
 val mockkVersion = "1.13.2"
-val kotlinVersion = "1.7.22"
+val kotlinVersion = "1.8.0"
 val googleCloudStorageVersion = "2.16.0"
 val nettyCodecVersion = "4.1.86.Final"
 
 plugins {
     java
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jmailen.kotlinter") version "3.12.0"
 }
