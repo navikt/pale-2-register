@@ -28,7 +28,7 @@ import org.junit.jupiter.api.Test
 import java.time.Duration
 
 class LegeerklaeringsServiceTest {
-    private val env = mockk<Environment>()
+    private val env = mockk<Environment>(relaxed = true)
     private val applicationState = ApplicationState()
     private val aivenKafkaConsumer = mockk<KafkaConsumer<String, String>>()
     private val bucketService = mockk<BucketService>()
@@ -36,12 +36,13 @@ class LegeerklaeringsServiceTest {
 
     private val legeerklaeringsService = LegeerklaeringsService(env, applicationState, aivenKafkaConsumer, bucketService, database)
 
-    val legeerklaeringSak = LegeerklaeringSak(receivedLegeerklaering, validationResult, emptyList())
 
 
     @BeforeEach
     fun setup() {
         database.connection.dropData()
+        applicationState.ready = true
+        applicationState.alive = true
     }
 
     @Test
@@ -50,41 +51,43 @@ class LegeerklaeringsServiceTest {
             aivenKafkaConsumer.subscribe(any<List<String>>())
         } returns Unit
 
-        val kafkaMessage = objectMapper.writeValueAsString(LegeerklaeringKafkaMessage("id", ValidationResult(Status.OK, emptyList()), emptyList()))
+        val kafkaMessage = objectMapper.writeValueAsString(LegeerklaeringKafkaMessage("12314", ValidationResult(Status.OK, emptyList()), emptyList()))
         val records = mapOf<TopicPartition, List<ConsumerRecord<String, String>>>(
             TopicPartition("Uansett", 42) to listOf(
-                ConsumerRecord("", 17, 23, "id", kafkaMessage)
+                ConsumerRecord("", 17, 23, "12314", kafkaMessage)
             )
         )
         val consumerRecords = ConsumerRecords(records)
 
         every {
-            bucketService.getLegeerklaring("id")
+            bucketService.getLegeerklaring("12314")
         } returns receivedLegeerklaering
 
         every {
             aivenKafkaConsumer.poll(any<Duration>())
-        } returns consumerRecords
+        } answers {
+            applicationState.ready = false
+            consumerRecords
+        }
 
         runBlocking {
             val job = legeerklaeringsService.run()
 
-            job.start()
             job.join()
-
-            verify(exactly = 1) {
-                aivenKafkaConsumer.poll(any<Duration>())
-            }
 
             verify(exactly = 1) {
                 aivenKafkaConsumer.subscribe(any<List<String>>())
             }
 
             verify(exactly = 1) {
-                bucketService.getLegeerklaring("id")
+                aivenKafkaConsumer.poll(any<Duration>())
             }
 
-            database.erLegeerklaeringsopplysningerLagret("id") shouldBeEqualTo true
+            verify(exactly = 1) {
+                bucketService.getLegeerklaring("12314")
+            }
+
+            database.erLegeerklaeringsopplysningerLagret("12314") shouldBeEqualTo true
         }
 
 
