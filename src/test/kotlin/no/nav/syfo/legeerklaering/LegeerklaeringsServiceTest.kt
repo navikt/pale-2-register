@@ -36,8 +36,6 @@ class LegeerklaeringsServiceTest {
 
     private val legeerklaeringsService = LegeerklaeringsService(env, applicationState, aivenKafkaConsumer, bucketService, database)
 
-
-
     @BeforeEach
     fun setup() {
         database.connection.dropData()
@@ -86,10 +84,63 @@ class LegeerklaeringsServiceTest {
             verify(exactly = 1) {
                 bucketService.getLegeerklaring("12314")
             }
-
             database.erLegeerklaeringsopplysningerLagret("12314") shouldBeEqualTo true
         }
+    }
 
+    @Test
+    internal fun `Slette legeerklaering`() {
+        every {
+            aivenKafkaConsumer.subscribe(any<List<String>>())
+        } returns Unit
 
+        database.lagreMottattLegeerklearing(
+            LegeerklaeringSak(
+                receivedLegeerklaering = receivedLegeerklaering,
+                validationResult = ValidationResult(Status.OK, emptyList()),
+                vedlegg = emptyList()
+            )
+        )
+
+        val records = mapOf<TopicPartition, List<ConsumerRecord<String, String>>>(
+            TopicPartition("Uansett", 42) to listOf(
+                ConsumerRecord("", 17, 23, "12314", null)
+            )
+        )
+        val consumerRecords = ConsumerRecords(records)
+
+        every {
+            bucketService.deleteLegeerklaring(receivedLegeerklaering.msgId)
+        } returns Unit
+
+        every {
+            aivenKafkaConsumer.poll(any<Duration>())
+        } answers {
+            applicationState.ready = false
+            consumerRecords
+        }
+
+        runBlocking {
+            val job = legeerklaeringsService.run()
+
+            job.join()
+
+            verify(exactly = 1) {
+                aivenKafkaConsumer.subscribe(any<List<String>>())
+            }
+
+            verify(exactly = 1) {
+                aivenKafkaConsumer.poll(any<Duration>())
+            }
+
+            verify(exactly = 0) {
+                bucketService.getLegeerklaring("12314")
+            }
+
+            verify(exactly = 1) {
+                bucketService.deleteLegeerklaring(receivedLegeerklaering.msgId)
+            }
+            database.erLegeerklaeringsopplysningerLagret("12314") shouldBeEqualTo false
+        }
     }
 }
