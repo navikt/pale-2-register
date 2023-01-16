@@ -21,7 +21,6 @@ val testContainerVersion = "1.17.6"
 val mockkVersion = "1.13.2"
 val kotlinVersion = "1.8.0"
 val googleCloudStorageVersion = "2.16.0"
-val nettyCodecVersion = "4.1.86.Final"
 
 plugins {
     java
@@ -48,9 +47,6 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    // This is to override version that is in io.ktor:ktor-server-netty
-    // https://www.cve.org/CVERecord?id=CVE-2022-41915
-    implementation("io.netty:netty-codec:$nettyCodecVersion")
 
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")

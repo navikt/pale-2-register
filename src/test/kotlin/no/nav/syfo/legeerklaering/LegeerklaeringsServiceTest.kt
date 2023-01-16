@@ -17,7 +17,6 @@ import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
 import no.nav.syfo.util.TestDB
 import no.nav.syfo.util.dropData
 import no.nav.syfo.util.receivedLegeerklaering
-import no.nav.syfo.util.validationResult
 import org.amshove.kluent.shouldBeEqualTo
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
