@@ -6,7 +6,7 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 
-val ktorVersion = "2.2.1"
+val ktorVersion = "2.2.2"
 val logbackVersion = "1.4.5"
 val logstashEncoderVersion = "7.2"
 val prometheusVersion = "0.16.0"
@@ -16,16 +16,14 @@ val jacksonVersion = "2.14.1"
 val postgresVersion = "42.5.1"
 val flywayVersion = "9.8.3"
 val hikariVersion = "5.0.1"
-val kluentVersion = "1.72"
 val testContainerVersion = "1.17.6"
 val mockkVersion = "1.13.2"
-val kotlinVersion = "1.7.22"
+val kotlinVersion = "1.8.0"
 val googleCloudStorageVersion = "2.16.0"
-val nettyCodecVersion = "4.1.86.Final"
 
 plugins {
     java
-    kotlin("jvm") version "1.7.22"
+    kotlin("jvm") version "1.8.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("org.jmailen.kotlinter") version "3.12.0"
 }
@@ -48,9 +46,6 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    // This is to override version that is in io.ktor:ktor-server-netty
-    // https://www.cve.org/CVERecord?id=CVE-2022-41915
-    implementation("io.netty:netty-codec:$nettyCodecVersion")
 
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
@@ -73,8 +68,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-
-    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
 
     testImplementation("org.testcontainers:postgresql:$testContainerVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")

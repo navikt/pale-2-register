@@ -86,7 +86,7 @@ fun DatabaseInterface.erLegeerklaeringsopplysningerLagret(legeerklaeringid: Stri
     connection.use { connection ->
         connection.prepareStatement(
             """
-                SELECT *
+                SELECT true
                 FROM LEGEERKLAERINGOPPLYSNINGER
                 WHERE id=?;
                 """

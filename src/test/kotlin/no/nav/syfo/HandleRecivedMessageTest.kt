@@ -10,7 +10,7 @@ import no.nav.syfo.util.dropData
 import no.nav.syfo.util.hentLegeerklearing
 import no.nav.syfo.util.receivedLegeerklaering
 import no.nav.syfo.util.validationResult
-import org.amshove.kluent.shouldBeEqualTo
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -29,42 +29,47 @@ internal class HandleRecivedMessageTest {
     internal fun `Check that legeerklaering is already stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
-        database.erLegeerklaeringsopplysningerLagret(
-            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
-        ) shouldBeEqualTo true
+        assertEquals(
+            true,
+            database.erLegeerklaeringsopplysningerLagret(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+        )
     }
 
     @Test
     internal fun `Check that legeerklaering is not already stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
-        database.erLegeerklaeringsopplysningerLagret("23") shouldBeEqualTo false
+        assertEquals(false, database.erLegeerklaeringsopplysningerLagret("23"))
     }
 
     @Test
     internal fun `Check legeerklaering is stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
-        val legeerklaeringOpplysninger =
-            database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+        val legeerklaeringOpplysninger = database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
-        legeerklaeringOpplysninger.first().pasient_fnr shouldBeEqualTo legeerklaeringSak.receivedLegeerklaering.personNrPasient
+        assertEquals(legeerklaeringSak.receivedLegeerklaering.personNrPasient, legeerklaeringOpplysninger.first().pasient_fnr)
     }
 
     @Test
     internal fun `Legeerklaering slettes fra db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
-        database.erLegeerklaeringsopplysningerLagret(
-            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
-        ) shouldBeEqualTo true
+        assertEquals(
+            true,
+            database.erLegeerklaeringsopplysningerLagret(
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            )
+        )
 
-        database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id) shouldBeEqualTo
-            receivedLegeerklaering.msgId
+        assertEquals(receivedLegeerklaering.msgId, database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id))
 
         database.slettLegeerklaering(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
-        database.erLegeerklaeringsopplysningerLagret(
-            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
-        ) shouldBeEqualTo false
+        assertEquals(
+            false,
+            database.erLegeerklaeringsopplysningerLagret(
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            )
+        )
     }
 }
