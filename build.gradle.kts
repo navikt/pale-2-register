@@ -16,7 +16,6 @@ val jacksonVersion = "2.14.1"
 val postgresVersion = "42.5.1"
 val flywayVersion = "9.8.3"
 val hikariVersion = "5.0.1"
-val kluentVersion = "1.72"
 val testContainerVersion = "1.17.6"
 val mockkVersion = "1.13.2"
 val kotlinVersion = "1.8.0"
@@ -69,8 +68,6 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-
-    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
 
     testImplementation("org.testcontainers:postgresql:$testContainerVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")

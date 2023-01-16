@@ -17,11 +17,11 @@ import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
 import no.nav.syfo.util.TestDB
 import no.nav.syfo.util.dropData
 import no.nav.syfo.util.receivedLegeerklaering
-import org.amshove.kluent.shouldBeEqualTo
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.TopicPartition
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Duration
@@ -83,7 +83,7 @@ class LegeerklaeringsServiceTest {
             verify(exactly = 1) {
                 bucketService.getLegeerklaring("12314")
             }
-            database.erLegeerklaeringsopplysningerLagret("12314") shouldBeEqualTo true
+            assertEquals(true, database.erLegeerklaeringsopplysningerLagret("12314"))
         }
     }
 
@@ -139,7 +139,7 @@ class LegeerklaeringsServiceTest {
             verify(exactly = 1) {
                 bucketService.deleteLegeerklaring(receivedLegeerklaering.msgId)
             }
-            database.erLegeerklaeringsopplysningerLagret("12314") shouldBeEqualTo false
+            assertEquals(false, database.erLegeerklaeringsopplysningerLagret("12314"))
         }
     }
 }
