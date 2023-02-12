@@ -55,8 +55,6 @@ spec:
   webproxy: true
   kafka:
     pool: nav-dev
-  ingresses:
-    - "https://pale-2-register.dev.intern.nav.no"
   env:
     - name: PALE_BUCKET_NAME
       value: teamsykmelding-pale2-legeerklaring-bucket-dev
