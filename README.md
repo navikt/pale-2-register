@@ -3,8 +3,14 @@
 # Persisting of legeerklæringer
 Application for persisting legeerklæringer in database
 
-<img src="./src/svg/flytdiagram.svg" alt="Image of the flow of the pale-2 application">
-
+## FlowChart
+This the high level flow for the application
+```mermaid
+  graph LR
+      A[\teamsykmelding.legeerklaering/] --> pale-2-register
+      pale-2-register <--> id1[(Database)]
+      pale-2-register --- GCP-Bucket;
+```
 
 ## Technologies used
 * Kotlin
