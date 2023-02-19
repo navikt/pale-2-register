@@ -14,6 +14,7 @@ class TestDB private constructor() {
 
         init {
             val postgres = PostgreSQLContainer<Nothing>("postgres:14").apply {
+                withCommand("postgres", "-c", "wal_level=logical")
                 withUsername("username")
                 withPassword("password")
                 withDatabaseName("database")
