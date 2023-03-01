@@ -8,7 +8,7 @@ version = "1.0.0"
 
 val ktorVersion = "2.2.3"
 val logbackVersion = "1.4.5"
-val logstashEncoderVersion = "7.2"
+val logstashEncoderVersion = "7.3"
 val prometheusVersion = "0.16.0"
 val junitJupiterVersion = "5.9.2"
 val pale2CommonVersion = "1.a94f960"
