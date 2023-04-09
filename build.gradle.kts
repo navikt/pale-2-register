@@ -19,7 +19,7 @@ val hikariVersion = "5.0.1"
 val testContainerVersion = "1.17.6"
 val mockkVersion = "1.13.2"
 val kotlinVersion = "1.8.20"
-val googleCloudStorageVersion = "2.16.0"
+val googleCloudStorageVersion = "2.21.0"
 
 plugins {
     java
