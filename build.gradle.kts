@@ -17,7 +17,7 @@ val postgresVersion = "42.5.1"
 val flywayVersion = "9.8.3"
 val hikariVersion = "5.0.1"
 val testContainerVersion = "1.17.6"
-val mockkVersion = "1.13.2"
+val mockkVersion = "1.13.4"
 val kotlinVersion = "1.8.20"
 val googleCloudStorageVersion = "2.16.0"
 
