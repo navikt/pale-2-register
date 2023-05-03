@@ -33,7 +33,7 @@ class LegeerklaeringsService(
     val applicationState: ApplicationState,
     val aivenKafkaConsumer: KafkaConsumer<String, String>,
     val bucketService: BucketService,
-    val database: DatabaseInterface
+    val database: DatabaseInterface,
 ) {
 
     @OptIn(DelicateCoroutinesApi::class)
@@ -60,7 +60,7 @@ class LegeerklaeringsService(
                             val legeerklaeringSak = LegeerklaeringSak(
                                 receivedLegeerklaering,
                                 legeerklaeringKafkaMessage.validationResult,
-                                legeerklaeringKafkaMessage.vedlegg
+                                legeerklaeringKafkaMessage.vedlegg,
                             )
                             handleLegeerklaringSak(legeerklaeringSak)
                         }
@@ -70,12 +70,12 @@ class LegeerklaeringsService(
                 log.error(
                     "Applikasjonen restarter {}",
                     StructuredArguments.fields(e.loggingMeta),
-                    e.cause
+                    e.cause,
                 )
             } catch (e: Exception) {
                 log.error(
                     "Applikasjonen restarter",
-                    e.cause
+                    e.cause,
                 )
             } finally {
                 applicationState.ready = false
@@ -85,32 +85,32 @@ class LegeerklaeringsService(
     }
 
     private suspend fun handleLegeerklaringSak(
-        legeerklaeringSak: LegeerklaeringSak
+        legeerklaeringSak: LegeerklaeringSak,
     ) {
         val loggingMeta = LoggingMeta(
             mottakId = legeerklaeringSak.receivedLegeerklaering.navLogId,
             orgNr = legeerklaeringSak.receivedLegeerklaering.legekontorOrgNr,
             msgId = legeerklaeringSak.receivedLegeerklaering.msgId,
-            legeerklaeringId = legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            legeerklaeringId = legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
         )
         wrapExceptions(loggingMeta) {
             log.info("Mottok ein legeerklæring, {}", StructuredArguments.fields(loggingMeta))
             INCOMING_MESSAGE_COUNTER.inc()
 
             if (database.erLegeerklaeringsopplysningerLagret(
-                    legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+                    legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
                 )
             ) {
                 log.warn(
                     "Legeerklæring med legeerklæringsid {}, er allerede lagret i databasen, {}",
                     legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
-                    StructuredArguments.fields(loggingMeta)
+                    StructuredArguments.fields(loggingMeta),
                 )
             } else {
                 database.lagreMottattLegeerklearing(legeerklaeringSak)
                 log.info(
                     "Legeerklæring lagret i databasen, for {}",
-                    StructuredArguments.fields(loggingMeta)
+                    StructuredArguments.fields(loggingMeta),
                 )
                 MESSAGE_STORED_IN_DB_COUNTER.inc()
             }

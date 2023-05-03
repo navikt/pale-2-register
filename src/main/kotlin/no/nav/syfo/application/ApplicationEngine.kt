@@ -11,7 +11,7 @@ import no.nav.syfo.metrics.monitorHttpRequests
 
 fun createApplicationEngine(
     env: Environment,
-    applicationState: ApplicationState
+    applicationState: ApplicationState,
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
         routing {

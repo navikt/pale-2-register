@@ -51,8 +51,8 @@ class LegeerklaeringsServiceTest {
         val kafkaMessage = objectMapper.writeValueAsString(LegeerklaeringKafkaMessage("12314", ValidationResult(Status.OK, emptyList()), emptyList()))
         val records = mapOf<TopicPartition, List<ConsumerRecord<String, String>>>(
             TopicPartition("Uansett", 42) to listOf(
-                ConsumerRecord("", 17, 23, "12314", kafkaMessage)
-            )
+                ConsumerRecord("", 17, 23, "12314", kafkaMessage),
+            ),
         )
         val consumerRecords = ConsumerRecords(records)
 
@@ -97,14 +97,14 @@ class LegeerklaeringsServiceTest {
             LegeerklaeringSak(
                 receivedLegeerklaering = receivedLegeerklaering,
                 validationResult = ValidationResult(Status.OK, emptyList()),
-                vedlegg = emptyList()
-            )
+                vedlegg = emptyList(),
+            ),
         )
 
         val records = mapOf<TopicPartition, List<ConsumerRecord<String, String>>>(
             TopicPartition("Uansett", 42) to listOf(
-                ConsumerRecord("", 17, 23, "12314", null)
-            )
+                ConsumerRecord("", 17, 23, "12314", null),
+            ),
         )
         val consumerRecords = ConsumerRecords(records)
 

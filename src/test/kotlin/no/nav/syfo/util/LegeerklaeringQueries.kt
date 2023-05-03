@@ -30,7 +30,7 @@ private fun Connection.hentLegeerklaeringOpplysninger(legeerklaeringId: String):
                 tss_id
             FROM LEGEERKLAERINGOPPLYSNINGER
             WHERE id = ?;
-            """
+            """,
     ).use {
         it.setString(1, legeerklaeringId)
         it.executeQuery().toList { toLegeerklaeringOpplysninger() }
@@ -49,7 +49,7 @@ fun ResultSet.toLegeerklaeringOpplysninger(): LegeerklaeringOpplysninger =
         legekontor_her_id = getString("legekontor_her_id").trim(),
         legekontor_resh_id = getString("legekontor_resh_id").trim(),
         mottatt_tidspunkt = getTimestamp("mottatt_tidspunkt").toLocalDateTime(),
-        tss_id = getString("tss_id").trim()
+        tss_id = getString("tss_id").trim(),
     )
 
 data class LegeerklaeringOpplysninger(
@@ -64,5 +64,5 @@ data class LegeerklaeringOpplysninger(
     val legekontor_her_id: String?,
     val legekontor_resh_id: String?,
     val mottatt_tidspunkt: LocalDateTime?,
-    val tss_id: String?
+    val tss_id: String?,
 )

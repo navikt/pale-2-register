@@ -26,9 +26,9 @@ val validationResult = ValidationResult(
             messageForUser = "Den som skrev legeerklæringen manglet autorisasjon.",
             messageForSender = "Legeerklæringen kan ikke rettes, det må skrives en ny. Grunnet følgende:" +
                 "Behandler er ikke gyldig i HPR på konsultasjonstidspunkt",
-            ruleStatus = Status.INVALID
-        )
-    )
+            ruleStatus = Status.INVALID,
+        ),
+    ),
 )
 
 val legeerklaering = Legeerklaering(
@@ -51,38 +51,38 @@ val legeerklaering = Legeerklaering(
             navn = "NAV IKT",
             adresse = "Sannergata 2",
             postnummer = 557,
-            poststed = "Oslo"
-        )
+            poststed = "Oslo",
+        ),
     ),
     sykdomsopplysninger = Sykdomsopplysninger(
         hoveddiagnose = Diagnose(
             tekst = "Fysikalsk behandling/rehabilitering",
-            kode = "-57"
+            kode = "-57",
         ),
         bidiagnose = listOf(
             Diagnose(
                 tekst = "Engstelig for hjertesykdom",
-                kode = "K24"
-            )
+                kode = "K24",
+            ),
         ),
         arbeidsuforFra = LocalDateTime.now().minusDays(3),
         sykdomshistorie = "Tekst",
         statusPresens = "Tekst",
         borNavKontoretVurdereOmDetErEnYrkesskade = true,
-        yrkesSkadeDato = LocalDateTime.now().minusDays(4)
+        yrkesSkadeDato = LocalDateTime.now().minusDays(4),
     ),
     plan = Plan(
         utredning = null,
         behandling = Henvisning(
             tekst = "2 timer i uken med svømming",
             dato = LocalDateTime.now(),
-            antattVentetIUker = 1
+            antattVentetIUker = 1,
         ),
         utredningsplan = "Tekst",
         behandlingsplan = "Tekst",
         vurderingAvTidligerePlan = "Tekst",
         narSporreOmNyeLegeopplysninger = "Tekst",
-        videreBehandlingIkkeAktueltGrunn = "Tekst"
+        videreBehandlingIkkeAktueltGrunn = "Tekst",
     ),
     forslagTilTiltak = ForslagTilTiltak(
         behov = true,
@@ -94,7 +94,7 @@ val legeerklaering = Legeerklaering(
         friskmeldingTilArbeidsformidling = false,
         andreTiltak = "Trenger taco i lunsjen",
         naermereOpplysninger = "Tacoen må bestå av ordentlige råvarer",
-        tekst = "Pasienten har store problemer med fordøying av annen mat enn Taco"
+        tekst = "Pasienten har store problemer med fordøying av annen mat enn Taco",
 
     ),
     funksjonsOgArbeidsevne = FunksjonsOgArbeidsevne(
@@ -111,13 +111,13 @@ val legeerklaering = Legeerklaering(
         kanTaAnnetArbeidNa = true,
         kanTaAnnetArbeidEtterBehandling = true,
         kanIkkeGjenopptaNaverendeArbeid = "Spise annen mat enn Taco",
-        kanIkkeTaAnnetArbeid = "Spise annen mat enn Taco"
+        kanIkkeTaAnnetArbeid = "Spise annen mat enn Taco",
     ),
     prognose = Prognose(
         vilForbedreArbeidsevne = true,
         anslattVarighetSykdom = "1 uke",
         anslattVarighetFunksjonsnedsetting = "2 uker",
-        anslattVarighetNedsattArbeidsevne = "4 uker"
+        anslattVarighetNedsattArbeidsevne = "4 uker",
     ),
     arsakssammenheng = "Funksjonsnedsettelsen har stor betydning for at arbeidsevnen er nedsatt",
     andreOpplysninger = "Tekst",
@@ -126,7 +126,7 @@ val legeerklaering = Legeerklaering(
         skalKontakteArbeidsgiver = true,
         skalKontakteBasisgruppe = false,
         kontakteAnnenInstans = null,
-        onskesKopiAvVedtak = true
+        onskesKopiAvVedtak = true,
     ),
     tilbakeholdInnhold = false,
     pasientenBurdeIkkeVite = null,
@@ -137,9 +137,9 @@ val legeerklaering = Legeerklaering(
         postnummer = "9999",
         poststed = "Stockholm",
         signatur = "Lege Legesen",
-        tlfNummer = "98765432"
+        tlfNummer = "98765432",
     ),
-    signaturDato = LocalDateTime.now()
+    signaturDato = LocalDateTime.now(),
 )
 
 val receivedLegeerklaering = ReceivedLegeerklaering(
@@ -156,6 +156,6 @@ val receivedLegeerklaering = ReceivedLegeerklaering(
     legekontorReshId = "23141",
     mottattDato = LocalDateTime.now(),
     fellesformat = "fellesformatet",
-    tssid = ""
+    tssid = "",
 
 )

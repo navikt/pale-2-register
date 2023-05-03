@@ -31,7 +31,7 @@ internal class HandleRecivedMessageTest {
 
         assertEquals(
             true,
-            database.erLegeerklaeringsopplysningerLagret(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+            database.erLegeerklaeringsopplysningerLagret(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id),
         )
     }
 
@@ -57,8 +57,8 @@ internal class HandleRecivedMessageTest {
         assertEquals(
             true,
             database.erLegeerklaeringsopplysningerLagret(
-                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
-            )
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
+            ),
         )
 
         assertEquals(receivedLegeerklaering.msgId, database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id))
@@ -68,8 +68,8 @@ internal class HandleRecivedMessageTest {
         assertEquals(
             false,
             database.erLegeerklaeringsopplysningerLagret(
-                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
-            )
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
+            ),
         )
     }
 }

@@ -16,7 +16,7 @@ fun DatabaseInterface.lagreMottattLegeerklearing(legeerklaeringSak: Legeerklaeri
         connection.opprettLegeerklaeringsdokument(legeerklaeringSak.receivedLegeerklaering.legeerklaering)
         connection.opprettBehandlingsutfall(
             legeerklaeringSak.validationResult,
-            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
         )
         connection.commit()
     }
@@ -40,7 +40,7 @@ private fun Connection.opprettLegeerklaeringOpplysninger(receivedLegeerklaering:
                 tss_id
                 )
             VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """
+            """,
     ).use {
         it.setString(1, receivedLegeerklaering.legeerklaering.id)
         it.setString(2, receivedLegeerklaering.legeerklaering.pasient.fnr)
@@ -62,7 +62,7 @@ private fun Connection.opprettLegeerklaeringsdokument(legeerklaering: Legeerklae
     this.prepareStatement(
         """
             INSERT INTO LEGEERKLAERINGSDOKUMENT(id, legerklearing) VALUES  (?, ?)
-            """
+            """,
     ).use {
         it.setString(1, legeerklaering.id)
         it.setObject(2, legeerklaering.toPGObject())
@@ -74,7 +74,7 @@ private fun Connection.opprettBehandlingsutfall(validationResult: ValidationResu
     this.prepareStatement(
         """
                     INSERT INTO BEHANDLINGSUTFALL(id, behandlingsutfall) VALUES (?, ?)
-                """
+                """,
     ).use {
         it.setString(1, legeerklaeringid)
         it.setObject(2, validationResult.toPGObject())
@@ -89,7 +89,7 @@ fun DatabaseInterface.erLegeerklaeringsopplysningerLagret(legeerklaeringid: Stri
                 SELECT true
                 FROM LEGEERKLAERINGOPPLYSNINGER
                 WHERE id=?;
-                """
+                """,
         ).use {
             it.setString(1, legeerklaeringid)
             it.executeQuery().next()
@@ -107,7 +107,7 @@ private fun Connection.slettLegeerklaering(legeerklaeringid: String) {
     this.prepareStatement(
         """
                     DELETE FROM LEGEERKLAERINGOPPLYSNINGER WHERE id=?;
-                """
+                """,
     ).use {
         it.setString(1, legeerklaeringid)
         it.executeUpdate()
@@ -121,7 +121,7 @@ fun DatabaseInterface.hentMsgId(legeerklaeringId: String): String? {
                  SELECT msg_id 
                  FROM LEGEERKLAERINGOPPLYSNINGER 
                  WHERE id=?;
-                """
+                """,
         ).use { preparedStatement ->
             preparedStatement.setString(1, legeerklaeringId)
             preparedStatement.executeQuery().use { resultSet ->

@@ -10,7 +10,7 @@ data class Environment(
     val dbName: String = getEnvVar("DB_DATABASE"),
     val legeerklaeringBucketName: String = getEnvVar("PALE_BUCKET_NAME"),
     val legeerklaringTopic: String = "teamsykmelding.legeerklaering",
-    val cluster: String = getEnvVar("NAIS_CLUSTER_NAME")
+    val cluster: String = getEnvVar("NAIS_CLUSTER_NAME"),
 )
 
 fun getEnvVar(varName: String, defaultValue: String? = null) =

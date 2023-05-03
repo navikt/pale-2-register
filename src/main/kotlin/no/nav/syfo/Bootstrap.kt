@@ -53,7 +53,7 @@ fun main() {
 
     val aivenConfig = KafkaUtils.getAivenKafkaConfig().toConsumerConfig(
         "${env.applicationName}-consumer",
-        valueDeserializer = StringDeserializer::class
+        valueDeserializer = StringDeserializer::class,
     ).also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 

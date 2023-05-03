@@ -8,7 +8,7 @@ import no.nav.syfo.objectMapper
 
 class BucketService(
     private val name: String,
-    private val storage: Storage
+    private val storage: Storage,
 ) {
 
     fun getLegeerklaring(objectId: String): ReceivedLegeerklaering {
