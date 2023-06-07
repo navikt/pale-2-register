@@ -18,7 +18,7 @@ val flywayVersion = "9.19.1"
 val hikariVersion = "5.0.1"
 val testContainerVersion = "1.18.3"
 val mockkVersion = "1.13.5"
-val kotlinVersion = "1.8.21"
+val kotlinVersion = "1.8.22"
 val googleCloudStorageVersion = "2.22.3"
 
 plugins {
