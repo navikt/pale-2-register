@@ -14,8 +14,6 @@ fun createApplicationEngine(
     applicationState: ApplicationState,
 ): ApplicationEngine =
     embeddedServer(Netty, env.applicationPort) {
-        routing {
-            registerNaisApi(applicationState)
-        }
+        routing { registerNaisApi(applicationState) }
         intercept(ApplicationCallPipeline.Monitoring, monitorHttpRequests())
     }

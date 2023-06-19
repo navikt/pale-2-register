@@ -2,26 +2,29 @@ package no.nav.syfo.util
 
 import io.mockk.every
 import io.mockk.mockk
+import java.sql.Connection
 import no.nav.syfo.Environment
 import no.nav.syfo.db.Database
 import no.nav.syfo.db.DatabaseInterface
 import org.testcontainers.containers.PostgreSQLContainer
-import java.sql.Connection
 
 class TestDB private constructor() {
     companion object {
         var database: DatabaseInterface
 
         init {
-            val postgres = PostgreSQLContainer<Nothing>("postgres:14").apply {
-                withCommand("postgres", "-c", "wal_level=logical")
-                withUsername("username")
-                withPassword("password")
-                withDatabaseName("database")
-                withInitScript("db/testdb-init.sql")
-                start()
-                println("Database: jdbc:postgresql://localhost:$firstMappedPort/test startet opp, credentials: test og test")
-            }
+            val postgres =
+                PostgreSQLContainer<Nothing>("postgres:14").apply {
+                    withCommand("postgres", "-c", "wal_level=logical")
+                    withUsername("username")
+                    withPassword("password")
+                    withDatabaseName("database")
+                    withInitScript("db/testdb-init.sql")
+                    start()
+                    println(
+                        "Database: jdbc:postgresql://localhost:$firstMappedPort/test startet opp, credentials: test og test"
+                    )
+                }
 
             val mockEnv = mockk<Environment>(relaxed = true)
             every { mockEnv.databaseUsername } returns postgres.username

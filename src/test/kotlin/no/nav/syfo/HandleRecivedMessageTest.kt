@@ -31,7 +31,9 @@ internal class HandleRecivedMessageTest {
 
         assertEquals(
             true,
-            database.erLegeerklaeringsopplysningerLagret(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id),
+            database.erLegeerklaeringsopplysningerLagret(
+                legeerklaeringSak.receivedLegeerklaering.legeerklaering.id
+            ),
         )
     }
 
@@ -46,9 +48,13 @@ internal class HandleRecivedMessageTest {
     internal fun `Check legeerklaering is stored in db`() {
         database.lagreMottattLegeerklearing(legeerklaeringSak)
 
-        val legeerklaeringOpplysninger = database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+        val legeerklaeringOpplysninger =
+            database.hentLegeerklearing(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 
-        assertEquals(legeerklaeringSak.receivedLegeerklaering.personNrPasient, legeerklaeringOpplysninger.first().pasient_fnr)
+        assertEquals(
+            legeerklaeringSak.receivedLegeerklaering.personNrPasient,
+            legeerklaeringOpplysninger.first().pasient_fnr
+        )
     }
 
     @Test
@@ -61,7 +67,10 @@ internal class HandleRecivedMessageTest {
             ),
         )
 
-        assertEquals(receivedLegeerklaering.msgId, database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id))
+        assertEquals(
+            receivedLegeerklaering.msgId,
+            database.hentMsgId(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
+        )
 
         database.slettLegeerklaering(legeerklaeringSak.receivedLegeerklaering.legeerklaering.id)
 

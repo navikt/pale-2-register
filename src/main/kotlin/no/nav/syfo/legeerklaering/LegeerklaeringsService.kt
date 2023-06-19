@@ -1,6 +1,8 @@
 package no.nav.syfo.legeerklaering
 
 import com.fasterxml.jackson.module.kotlin.readValue
+import java.lang.Exception
+import java.time.Duration
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,8 +27,6 @@ import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
 import no.nav.syfo.utils.wrapExceptions
 import org.apache.kafka.clients.consumer.KafkaConsumer
-import java.lang.Exception
-import java.time.Duration
 
 class LegeerklaeringsService(
     val env: Environment,
@@ -45,23 +45,32 @@ class LegeerklaeringsService(
                     aivenKafkaConsumer.poll(Duration.ofSeconds(10)).forEach { consumerRecord ->
                         if (consumerRecord.value() == null) {
                             val legeerklaeringId = consumerRecord.key()
-                            log.info("Mottatt tombstone-melding for legeerklæring med id $legeerklaeringId")
+                            log.info(
+                                "Mottatt tombstone-melding for legeerklæring med id $legeerklaeringId"
+                            )
                             val msgId = database.hentMsgId(legeerklaeringId)
                             if (msgId.isNullOrEmpty()) {
-                                log.error("Slettet ikkje legeerklæring grunnet: fant ikkje msgId for legeerklæring med id $legeerklaeringId")
+                                log.error(
+                                    "Slettet ikkje legeerklæring grunnet: fant ikkje msgId for legeerklæring med id $legeerklaeringId"
+                                )
                             } else {
                                 bucketService.deleteLegeerklaring(msgId)
                                 database.slettLegeerklaering(legeerklaeringId)
                                 log.info("Slettet legeerklæring med id $legeerklaeringId")
                             }
                         } else {
-                            val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage = objectMapper.readValue(consumerRecord.value())
-                            val receivedLegeerklaering = bucketService.getLegeerklaring(legeerklaeringKafkaMessage.legeerklaeringObjectId)
-                            val legeerklaeringSak = LegeerklaeringSak(
-                                receivedLegeerklaering,
-                                legeerklaeringKafkaMessage.validationResult,
-                                legeerklaeringKafkaMessage.vedlegg,
-                            )
+                            val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage =
+                                objectMapper.readValue(consumerRecord.value())
+                            val receivedLegeerklaering =
+                                bucketService.getLegeerklaring(
+                                    legeerklaeringKafkaMessage.legeerklaeringObjectId
+                                )
+                            val legeerklaeringSak =
+                                LegeerklaeringSak(
+                                    receivedLegeerklaering,
+                                    legeerklaeringKafkaMessage.validationResult,
+                                    legeerklaeringKafkaMessage.vedlegg,
+                                )
                             handleLegeerklaringSak(legeerklaeringSak)
                         }
                     }
@@ -87,17 +96,19 @@ class LegeerklaeringsService(
     private suspend fun handleLegeerklaringSak(
         legeerklaeringSak: LegeerklaeringSak,
     ) {
-        val loggingMeta = LoggingMeta(
-            mottakId = legeerklaeringSak.receivedLegeerklaering.navLogId,
-            orgNr = legeerklaeringSak.receivedLegeerklaering.legekontorOrgNr,
-            msgId = legeerklaeringSak.receivedLegeerklaering.msgId,
-            legeerklaeringId = legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
-        )
+        val loggingMeta =
+            LoggingMeta(
+                mottakId = legeerklaeringSak.receivedLegeerklaering.navLogId,
+                orgNr = legeerklaeringSak.receivedLegeerklaering.legekontorOrgNr,
+                msgId = legeerklaeringSak.receivedLegeerklaering.msgId,
+                legeerklaeringId = legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
+            )
         wrapExceptions(loggingMeta) {
             log.info("Mottok ein legeerklæring, {}", StructuredArguments.fields(loggingMeta))
             INCOMING_MESSAGE_COUNTER.inc()
 
-            if (database.erLegeerklaeringsopplysningerLagret(
+            if (
+                database.erLegeerklaeringsopplysningerLagret(
                     legeerklaeringSak.receivedLegeerklaering.legeerklaering.id,
                 )
             ) {

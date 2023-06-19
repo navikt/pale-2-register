@@ -1,20 +1,24 @@
 package no.nav.syfo.util
 
-import no.nav.syfo.db.DatabaseInterface
-import no.nav.syfo.db.toList
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.LocalDateTime
+import no.nav.syfo.db.DatabaseInterface
+import no.nav.syfo.db.toList
 
-fun DatabaseInterface.hentLegeerklearing(legeerklaeringId: String): List<LegeerklaeringOpplysninger> =
+fun DatabaseInterface.hentLegeerklearing(
+    legeerklaeringId: String
+): List<LegeerklaeringOpplysninger> =
     connection.use { connection ->
         val legeerklaeringOpplysninger = connection.hentLegeerklaeringOpplysninger(legeerklaeringId)
         return legeerklaeringOpplysninger
     }
 
-private fun Connection.hentLegeerklaeringOpplysninger(legeerklaeringId: String): List<LegeerklaeringOpplysninger> =
+private fun Connection.hentLegeerklaeringOpplysninger(
+    legeerklaeringId: String
+): List<LegeerklaeringOpplysninger> =
     this.prepareStatement(
-        """
+            """
             SELECT 
                 id,
                 pasient_fnr,
@@ -31,10 +35,11 @@ private fun Connection.hentLegeerklaeringOpplysninger(legeerklaeringId: String):
             FROM LEGEERKLAERINGOPPLYSNINGER
             WHERE id = ?;
             """,
-    ).use {
-        it.setString(1, legeerklaeringId)
-        it.executeQuery().toList { toLegeerklaeringOpplysninger() }
-    }
+        )
+        .use {
+            it.setString(1, legeerklaeringId)
+            it.executeQuery().toList { toLegeerklaeringOpplysninger() }
+        }
 
 fun ResultSet.toLegeerklaeringOpplysninger(): LegeerklaeringOpplysninger =
     LegeerklaeringOpplysninger(

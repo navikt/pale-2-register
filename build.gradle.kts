@@ -20,12 +20,13 @@ val testContainerVersion = "1.18.3"
 val mockkVersion = "1.13.5"
 val kotlinVersion = "1.8.22"
 val googleCloudStorageVersion = "2.22.4"
+val ktfmtVersion = "0.44"
 
 plugins {
     java
     kotlin("jvm") version "1.8.22"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.jmailen.kotlinter") version "3.15.0"
+    id("com.diffplug.spotless") version "6.19.0"
 }
 
 val githubUser: String by project
@@ -105,7 +106,10 @@ tasks {
         }
     }
 
-    "check" {
-        dependsOn("formatKotlin")
+    spotless {
+        kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
+        check {
+            dependsOn("spotlessApply")
+        }
     }
 }
