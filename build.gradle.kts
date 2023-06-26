@@ -5,26 +5,33 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "no.nav.syfo"
 version = "1.0.0"
 
+val ktor_version: String by project
+val logback_version: String by project
+val logstashEncoder_version: String by project
+val prometheus_version: String by project
+val junitJupiter_version: String by project
+val pale2Common_version: String by project
+val jackson_version: String by project
+val postgres_version: String by project
+val flyway_version: String by project
+val hikari_version: String by project
+val testContainer_version: String by project
+val mockk_version: String by project
+val kotlin_version: String by project
+val googleCloudStorage_version: String by project
+val ktfmt_version: String by project
 
-val ktorVersion = "2.3.1"
-val logbackVersion = "1.4.8"
-val logstashEncoderVersion = "7.4"
-val prometheusVersion = "0.16.0"
-val junitJupiterVersion = "5.9.3"
-val pale2CommonVersion = "1.0.5"
-val jacksonVersion = "2.15.2"
-val postgresVersion = "42.6.0"
-val flywayVersion = "9.20.0"
-val hikariVersion = "5.0.1"
-val testContainerVersion = "1.18.3"
-val mockkVersion = "1.13.5"
-val kotlinVersion = "1.8.22"
-val googleCloudStorageVersion = "2.23.0"
-val ktfmtVersion = "0.44"
+application {
+    mainClass.set("no.nav.syfo.ApplicationKt")
+
+    val isDevelopment: Boolean = project.ext.has("development")
+    applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
+}
 
 plugins {
     java
     kotlin("jvm") version "1.8.22"
+    id("io.ktor.plugin") version "2.3.1"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.diffplug.spotless") version "6.19.0"
     id("org.cyclonedx.bom") version "1.7.4"
@@ -44,43 +51,43 @@ repositories {
     }
 }
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version")
 
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-core:$ktor_version")
+    implementation("io.ktor:ktor-server-netty:$ktor_version")
 
-    implementation("org.postgresql:postgresql:$postgresVersion")
-    implementation("com.zaxxer:HikariCP:$hikariVersion")
-    implementation("org.flywaydb:flyway-core:$flywayVersion")
+    implementation("org.postgresql:postgresql:$postgres_version")
+    implementation("com.zaxxer:HikariCP:$hikari_version")
+    implementation("org.flywaydb:flyway-core:$flyway_version")
 
-    implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
-    implementation("io.prometheus:simpleclient_common:$prometheusVersion")
+    implementation("io.prometheus:simpleclient_hotspot:$prometheus_version")
+    implementation("io.prometheus:simpleclient_common:$prometheus_version")
 
-    implementation("ch.qos.logback:logback-classic:$logbackVersion")
-    implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoderVersion")
+    implementation("ch.qos.logback:logback-classic:$logback_version")
+    implementation("net.logstash.logback:logstash-logback-encoder:$logstashEncoder_version")
 
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jackson_version")
 
-    implementation("no.nav.syfo:pale-2-common-models:$pale2CommonVersion")
-    implementation("no.nav.syfo:pale-2-common-kafka:$pale2CommonVersion")
+    implementation("no.nav.syfo:pale-2-common-models:$pale2Common_version")
+    implementation("no.nav.syfo:pale-2-common-kafka:$pale2Common_version")
 
-    implementation("com.google.cloud:google-cloud-storage:$googleCloudStorageVersion")
+    implementation("com.google.cloud:google-cloud-storage:$googleCloudStorage_version")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiter_version")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiter_version")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiter_version")
 
-    testImplementation("org.testcontainers:postgresql:$testContainerVersion")
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
+    testImplementation("org.testcontainers:postgresql:$testContainer_version")
+    testImplementation("io.mockk:mockk:$mockk_version")
+    testImplementation("io.ktor:ktor-server-test-host:$ktor_version") {
         exclude(group = "org.eclipse.jetty")
     }
 }
 
 tasks {
     withType<Jar> {
-        manifest.attributes["Main-Class"] = "no.nav.syfo.BootstrapKt"
+        manifest.attributes["Main-Class"] = "no.nav.syfo.ApplicationKt"
     }
     create("printVersion") {
         doLast {
@@ -108,7 +115,7 @@ tasks {
     }
 
     spotless {
-        kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
+        kotlin { ktfmt(ktfmt_version).kotlinlangStyle() }
         check {
             dependsOn("spotlessApply")
         }

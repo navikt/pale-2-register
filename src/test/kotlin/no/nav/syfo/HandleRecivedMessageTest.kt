@@ -1,13 +1,13 @@
 package no.nav.syfo
 
+import no.nav.syfo.db.TestDB
+import no.nav.syfo.db.dropData
+import no.nav.syfo.db.erLegeerklaeringsopplysningerLagret
+import no.nav.syfo.db.hentLegeerklearing
+import no.nav.syfo.db.hentMsgId
+import no.nav.syfo.db.lagreMottattLegeerklearing
+import no.nav.syfo.db.slettLegeerklaering
 import no.nav.syfo.model.LegeerklaeringSak
-import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
-import no.nav.syfo.persistering.db.hentMsgId
-import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
-import no.nav.syfo.persistering.db.slettLegeerklaering
-import no.nav.syfo.util.TestDB
-import no.nav.syfo.util.dropData
-import no.nav.syfo.util.hentLegeerklearing
 import no.nav.syfo.util.receivedLegeerklaering
 import no.nav.syfo.util.validationResult
 import org.junit.jupiter.api.Assertions.assertEquals
