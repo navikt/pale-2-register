@@ -5,18 +5,18 @@ import io.mockk.mockk
 import io.mockk.verify
 import java.time.Duration
 import kotlinx.coroutines.runBlocking
-import no.nav.syfo.Environment
-import no.nav.syfo.application.ApplicationState
-import no.nav.syfo.gcp.BucketService
+import no.nav.syfo.ApplicationState
+import no.nav.syfo.EnvironmentVariables
+import no.nav.syfo.bucket.BucketService
+import no.nav.syfo.db.TestDB
+import no.nav.syfo.db.dropData
+import no.nav.syfo.db.erLegeerklaeringsopplysningerLagret
+import no.nav.syfo.db.lagreMottattLegeerklearing
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
 import no.nav.syfo.objectMapper
-import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
-import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
-import no.nav.syfo.util.TestDB
-import no.nav.syfo.util.dropData
 import no.nav.syfo.util.receivedLegeerklaering
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class LegeerklaeringsServiceTest {
-    private val env = mockk<Environment>(relaxed = true)
+    private val env = mockk<EnvironmentVariables>(relaxed = true)
     private val applicationState = ApplicationState()
     private val aivenKafkaConsumer = mockk<KafkaConsumer<String, String>>()
     private val bucketService = mockk<BucketService>()

@@ -1,11 +1,9 @@
-package no.nav.syfo.util
+package no.nav.syfo.db
 
 import io.mockk.every
 import io.mockk.mockk
 import java.sql.Connection
-import no.nav.syfo.Environment
-import no.nav.syfo.db.Database
-import no.nav.syfo.db.DatabaseInterface
+import no.nav.syfo.EnvironmentVariables
 import org.testcontainers.containers.PostgreSQLContainer
 
 class TestDB private constructor() {
@@ -26,7 +24,7 @@ class TestDB private constructor() {
                     )
                 }
 
-            val mockEnv = mockk<Environment>(relaxed = true)
+            val mockEnv = mockk<EnvironmentVariables>(relaxed = true)
             every { mockEnv.databaseUsername } returns postgres.username
             every { mockEnv.databasePassword } returns postgres.password
             every { mockEnv.dbName } returns postgres.databaseName

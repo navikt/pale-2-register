@@ -1,8 +1,7 @@
-package no.nav.syfo.persistering.db
+package no.nav.syfo.db
 
 import java.sql.Connection
 import java.sql.Timestamp
-import no.nav.syfo.db.DatabaseInterface
 import no.nav.syfo.model.Legeerklaering
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.ReceivedLegeerklaering

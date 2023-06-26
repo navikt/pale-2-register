@@ -9,17 +9,21 @@ import com.google.auth.Credentials
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import io.ktor.server.routing.*
 import io.prometheus.client.hotspot.DefaultExports
 import java.io.FileInputStream
-import kotlinx.coroutines.DelicateCoroutinesApi
-import no.nav.syfo.application.ApplicationServer
-import no.nav.syfo.application.ApplicationState
-import no.nav.syfo.application.createApplicationEngine
+import java.util.concurrent.TimeUnit
+import no.nav.syfo.bucket.BucketService
 import no.nav.syfo.db.Database
-import no.nav.syfo.gcp.BucketService
 import no.nav.syfo.kafka.aiven.KafkaUtils
 import no.nav.syfo.kafka.toConsumerConfig
 import no.nav.syfo.legeerklaering.LegeerklaeringsService
+import no.nav.syfo.nais.isalive.naisIsAliveRoute
+import no.nav.syfo.nais.isready.naisIsReadyRoute
+import no.nav.syfo.nais.prometheus.naisPrometheusRoute
 import org.apache.kafka.clients.consumer.ConsumerConfig
 import org.apache.kafka.clients.consumer.KafkaConsumer
 import org.apache.kafka.common.serialization.StringDeserializer
@@ -35,14 +39,41 @@ val objectMapper: ObjectMapper =
 
 val log: Logger = LoggerFactory.getLogger("no.nav.no.nav.syfo.pale2register")
 
-@DelicateCoroutinesApi
 fun main() {
-    val env = Environment()
-    val database = Database(env)
+    val embeddedServer =
+        embeddedServer(
+            Netty,
+            port = EnvironmentVariables().applicationPort,
+            module = Application::module,
+        )
+    Runtime.getRuntime()
+        .addShutdownHook(
+            Thread {
+                embeddedServer.stop(TimeUnit.SECONDS.toMillis(10), TimeUnit.SECONDS.toMillis(10))
+            },
+        )
+    embeddedServer.start(true)
+}
 
+fun Application.configureRouting(applicationState: ApplicationState) {
+    routing {
+        naisIsAliveRoute(applicationState)
+        naisIsReadyRoute(applicationState)
+        naisPrometheusRoute()
+    }
+}
+
+fun Application.module() {
+    val environmentVariables = EnvironmentVariables()
     val applicationState = ApplicationState()
+    val database = Database(environmentVariables)
 
-    val applicationEngine = createApplicationEngine(env, applicationState)
+    environment.monitor.subscribe(ApplicationStopped) {
+        applicationState.ready = false
+        applicationState.alive = false
+    }
+
+    configureRouting(applicationState = applicationState)
 
     DefaultExports.initialize()
 
@@ -51,18 +82,28 @@ fun main() {
 
     val bucketStorage: Storage =
         StorageOptions.newBuilder().setCredentials(paleStorageCredentials).build().service
-    val bucketService = BucketService(env.legeerklaeringBucketName, bucketStorage)
+    val bucketService = BucketService(environmentVariables.legeerklaeringBucketName, bucketStorage)
 
     val aivenConfig =
         KafkaUtils.getAivenKafkaConfig()
             .toConsumerConfig(
-                "${env.applicationName}-consumer",
+                "${environmentVariables.applicationName}-consumer",
                 valueDeserializer = StringDeserializer::class,
             )
             .also { it[ConsumerConfig.AUTO_OFFSET_RESET_CONFIG] = "none" }
     val aivenKafkaConsumer = KafkaConsumer<String, String>(aivenConfig)
 
-    LegeerklaeringsService(env, applicationState, aivenKafkaConsumer, bucketService, database).run()
-
-    ApplicationServer(applicationEngine, applicationState).start()
+    LegeerklaeringsService(
+            environmentVariables,
+            applicationState,
+            aivenKafkaConsumer,
+            bucketService,
+            database
+        )
+        .run()
 }
+
+data class ApplicationState(
+    var alive: Boolean = true,
+    var ready: Boolean = true,
+)

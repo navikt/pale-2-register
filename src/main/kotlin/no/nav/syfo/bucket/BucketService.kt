@@ -1,4 +1,4 @@
-package no.nav.syfo.gcp
+package no.nav.syfo.bucket
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.cloud.storage.Storage

@@ -1,10 +1,8 @@
-package no.nav.syfo.util
+package no.nav.syfo.db
 
 import java.sql.Connection
 import java.sql.ResultSet
 import java.time.LocalDateTime
-import no.nav.syfo.db.DatabaseInterface
-import no.nav.syfo.db.toList
 
 fun DatabaseInterface.hentLegeerklearing(
     legeerklaeringId: String

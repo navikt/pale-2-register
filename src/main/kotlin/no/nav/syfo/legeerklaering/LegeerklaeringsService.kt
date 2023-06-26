@@ -9,27 +9,27 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import net.logstash.logback.argument.StructuredArguments
-import no.nav.syfo.Environment
-import no.nav.syfo.application.ApplicationState
+import no.nav.syfo.ApplicationState
+import no.nav.syfo.EnvironmentVariables
+import no.nav.syfo.bucket.BucketService
 import no.nav.syfo.db.DatabaseInterface
-import no.nav.syfo.gcp.BucketService
+import no.nav.syfo.db.erLegeerklaeringsopplysningerLagret
+import no.nav.syfo.db.hentMsgId
+import no.nav.syfo.db.lagreMottattLegeerklearing
+import no.nav.syfo.db.slettLegeerklaering
 import no.nav.syfo.log
 import no.nav.syfo.metrics.INCOMING_MESSAGE_COUNTER
 import no.nav.syfo.metrics.MESSAGE_STORED_IN_DB_COUNTER
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
 import no.nav.syfo.objectMapper
-import no.nav.syfo.persistering.db.erLegeerklaeringsopplysningerLagret
-import no.nav.syfo.persistering.db.hentMsgId
-import no.nav.syfo.persistering.db.lagreMottattLegeerklearing
-import no.nav.syfo.persistering.db.slettLegeerklaering
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
 import no.nav.syfo.utils.wrapExceptions
 import org.apache.kafka.clients.consumer.KafkaConsumer
 
 class LegeerklaeringsService(
-    val env: Environment,
+    val env: EnvironmentVariables,
     val applicationState: ApplicationState,
     val aivenKafkaConsumer: KafkaConsumer<String, String>,
     val bucketService: BucketService,
