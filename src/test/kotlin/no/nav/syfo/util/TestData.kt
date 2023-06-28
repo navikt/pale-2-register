@@ -173,5 +173,6 @@ val receivedLegeerklaering =
         legekontorReshId = "23141",
         mottattDato = LocalDateTime.now(),
         fellesformat = "fellesformatet",
+        conversationRef = null,
         tssid = "",
     )
