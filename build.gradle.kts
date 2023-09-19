@@ -5,7 +5,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val ktorVersion="2.3.3"
+val ktorVersion="2.3.4"
 val logbackVersion="1.4.11"
 val logstashencoderVersion="7.4"
 val prometheusVersion="0.16.0"
@@ -13,12 +13,12 @@ val junitjupiterVersion="5.10.0"
 val pale2commonVersion="1.0.8"
 val jacksonVersion="2.15.2"
 val postgresVersion="42.6.0"
-val flywayVersion="9.21.1"
+val flywayVersion="9.22.1"
 val hikariVersion="5.0.1"
-val testcontainerVersion="1.18.3"
+val testcontainerVersion="1.19.0"
 val mockkVersion="1.13.7"
-val kotlinVersion="1.9.0"
-val googlecloudstorageVersion="2.26.1"
+val kotlinVersion="1.9.10"
+val googlecloudstorageVersion="2.27.0"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
 
@@ -31,10 +31,10 @@ application {
 
 plugins {
     java
-    kotlin("jvm") version "1.9.0"
-    id("io.ktor.plugin") version "2.3.3"
+    kotlin("jvm") version "1.9.10"
+    id("io.ktor.plugin") version "2.3.4"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.diffplug.spotless") version "6.20.0"
+    id("com.diffplug.spotless") version "6.21.0"
     id("org.cyclonedx.bom") version "1.7.4"
 }
 
