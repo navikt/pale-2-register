@@ -46,16 +46,12 @@ spec:
     path: /internal/prometheus
   resources:
     limits:
-      cpu: 500m
       memory: 1Gi
     requests:
       cpu: 50m
       memory: 400Mi
-  vault:
-    enabled: false
   filesFrom:
     - secret: pale2-google-creds
-  webproxy: true
   kafka:
     pool: nav-dev
   env:

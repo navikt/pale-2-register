@@ -1,7 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 group = "no.nav.syfo"
 version = "1.0.0"
 
@@ -10,7 +6,7 @@ val logbackVersion="1.4.11"
 val logstashencoderVersion="7.4"
 val prometheusVersion="0.16.0"
 val junitjupiterVersion="5.10.0"
-val pale2commonVersion="1.0.8"
+val pale2commonVersion="2.0.0"
 val jacksonVersion="2.15.2"
 val postgresVersion="42.6.0"
 val flywayVersion="9.22.2"
@@ -22,6 +18,13 @@ val googlecloudstorageVersion="2.27.0"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
 
+plugins {
+    id("application")
+    kotlin("jvm") version "1.9.10"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.diffplug.spotless") version "6.21.0"
+}
+
 application {
     mainClass.set("no.nav.syfo.ApplicationKt")
 
@@ -29,26 +32,10 @@ application {
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
 }
 
-plugins {
-    java
-    kotlin("jvm") version "1.9.10"
-    id("io.ktor.plugin") version "2.3.4"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.diffplug.spotless") version "6.21.0"
-    id("org.cyclonedx.bom") version "1.7.4"
-}
-
-val githubUser: String by project
-val githubPassword: String by project
-
 repositories {
     mavenCentral()
     maven {
-        url = uri("https://maven.pkg.github.com/navikt/pale-2-common")
-        credentials {
-            username = githubUser
-            password = githubPassword
-        }
+        url = uri("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
     }
 }
 dependencies {
@@ -78,6 +65,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitjupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitjupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitjupiterVersion")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     testImplementation("org.testcontainers:postgresql:$testcontainerVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
@@ -87,26 +75,20 @@ dependencies {
 }
 
 tasks {
-    withType<Jar> {
-        manifest.attributes["Main-Class"] = "no.nav.syfo.ApplicationKt"
-    }
-    create("printVersion") {
-        doLast {
-            println(project.version)
-        }
-    }
-    withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = jvmVersion
-    }
-
-    withType<ShadowJar> {
-        transform(ServiceFileTransformer::class.java) {
-            setPath("META-INF/cxf")
-            include("bus-extensions.txt")
+    shadowJar {
+        archiveBaseName.set("app")
+        archiveClassifier.set("")
+        isZip64 = true
+        manifest {
+            attributes(
+                mapOf(
+                    "Main-Class" to "no.nav.syfo.ApplicationKt",
+                ),
+            )
         }
     }
 
-    withType<Test> {
+    test {
         useJUnitPlatform {}
         testLogging {
             events("skipped", "failed")
