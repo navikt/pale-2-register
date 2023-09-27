@@ -14,7 +14,7 @@ val hikariVersion="5.0.1"
 val testcontainerVersion="1.19.0"
 val mockkVersion="1.13.8"
 val kotlinVersion="1.9.10"
-val googlecloudstorageVersion="2.27.0"
+val googlecloudstorageVersion="2.27.1"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
 
