@@ -17,6 +17,7 @@ val kotlinVersion="1.9.10"
 val googlecloudstorageVersion="2.27.1"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
+val snappyJavaVersion = "1.1.10.4"
 
 plugins {
     id("application")
@@ -59,6 +60,11 @@ dependencies {
 
     implementation("no.nav.syfo:pale-2-common-models:$pale2commonVersion")
     implementation("no.nav.syfo:pale-2-common-kafka:$pale2commonVersion")
+    constraints {
+        implementation("org.xerial.snappy:snappy-java:$snappyJavaVersion") {
+            because("override transient from org.apache.kafka:kafka_2.12")
+        }
+    }
 
     implementation("com.google.cloud:google-cloud-storage:$googlecloudstorageVersion")
 
