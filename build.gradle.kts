@@ -17,7 +17,7 @@ val kotlinVersion="1.9.10"
 val googlecloudstorageVersion="2.27.1"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
-val snappyJavaVersion = "1.1.10.4"
+val snappyJavaVersion = "1.1.10.5"
 
 plugins {
     id("application")
