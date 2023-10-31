@@ -9,11 +9,11 @@ val junitjupiterVersion="5.10.0"
 val pale2commonVersion="2.0.1"
 val jacksonVersion="2.15.3"
 val postgresVersion="42.6.0"
-val flywayVersion="9.22.3"
+val flywayVersion="10.0.0"
 val hikariVersion="5.0.1"
 val testcontainerVersion="1.19.1"
 val mockkVersion="1.13.8"
-val kotlinVersion="1.9.10"
+val kotlinVersion="1.9.20"
 val googlecloudstorageVersion="2.29.0"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
@@ -21,7 +21,7 @@ val snappyJavaVersion = "1.1.10.5"
 
 plugins {
     id("application")
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.diffplug.spotless") version "6.22.0"
 }
