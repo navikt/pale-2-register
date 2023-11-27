@@ -1,29 +1,29 @@
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val ktorVersion="2.3.5"
-val logbackVersion="1.4.11"
+val ktorVersion="2.3.6"
+val logbackVersion="1.4.12"
 val logstashencoderVersion="7.4"
 val prometheusVersion="0.16.0"
-val junitjupiterVersion="5.10.0"
+val junitjupiterVersion="5.10.1"
 val pale2commonVersion="2.0.3"
-val jacksonVersion="2.15.3"
-val postgresVersion="42.6.0"
-val flywayVersion="9.22.3"
-val hikariVersion="5.0.1"
-val testcontainerVersion="1.19.1"
+val jacksonVersion="2.16.0"
+val postgresVersion="42.7.0"
+val flywayVersion="10.1.0"
+val hikariVersion="5.1.0"
+val testcontainerVersion="1.19.3"
 val mockkVersion="1.13.8"
-val kotlinVersion="1.9.20"
-val googlecloudstorageVersion="2.29.0"
+val kotlinVersion="1.9.21"
+val googlecloudstorageVersion="2.29.1"
 val ktfmtVersion="0.44"
 val jvmVersion= "17"
 val snappyJavaVersion = "1.1.10.5"
 
 plugins {
     id("application")
-    kotlin("jvm") version "1.9.20"
+    kotlin("jvm") version "1.9.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("com.diffplug.spotless") version "6.22.0"
+    id("com.diffplug.spotless") version "6.23.0"
 }
 
 application {
