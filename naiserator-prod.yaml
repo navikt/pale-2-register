@@ -50,10 +50,10 @@ spec:
       runtime: java
   resources:
     limits:
-      memory: 2Gi
+      memory: 3Gi
     requests:
       cpu: 50m
-      memory: 512Mi
+      memory: 700Mi
   filesFrom:
     - secret: pale2-google-creds
   kafka:
