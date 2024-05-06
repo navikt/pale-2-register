@@ -27,7 +27,7 @@ spec:
   image: {{ image }}
   replicas:
     min: 2
-    max: 3
+    max: 4
     cpuThresholdPercentage: 90
   port: 8080
   liveness:
@@ -52,7 +52,7 @@ spec:
     limits:
       memory: 3Gi
     requests:
-      cpu: 50m
+      cpu: 100m
       memory: 700Mi
   filesFrom:
     - secret: pale2-google-creds
