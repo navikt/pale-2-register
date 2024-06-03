@@ -21,8 +21,13 @@ This the high level flow for the application
 * Postgres
 
 #### Requirements
+* JDK 21
 
-* JDK 17
+Make sure you have the Java JDK 21 installed locally
+You can check which version you have installed using this command:
+``` bash
+java -version
+```
 
 ### Build and run tests
 To build locally and run the integration tests you can simply run `./gradlew shadowJar` or on windows 
