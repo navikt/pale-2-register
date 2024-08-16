@@ -6,7 +6,6 @@ val logbackVersion = "1.5.7"
 val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "5.11.0"
-val pale2commonVersion = "2.0.9"
 val jacksonVersion = "2.17.2"
 val postgresVersion = "42.7.3"
 val flywayVersion = "10.17.1"
@@ -20,6 +19,7 @@ val jvmVersion = "17"
 val snappyJavaVersion = "1.1.10.6"
 val commonsCompressVersion = "1.27.0"
 val nettyCodecHttp = "4.1.112.Final"
+val kafkaVersion = "3.8.0"
 
 plugins {
     id("application")
@@ -66,13 +66,8 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
-    implementation("no.nav.syfo:pale-2-common-models:$pale2commonVersion")
-    implementation("no.nav.syfo:pale-2-common-kafka:$pale2commonVersion")
-    constraints {
-        implementation("org.xerial.snappy:snappy-java:$snappyJavaVersion") {
-            because("override transient from org.apache.kafka:kafka_2.12")
-        }
-    }
+
+    implementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
 
     implementation("com.google.cloud:google-cloud-storage:$googlecloudstorageVersion")
 
