@@ -24,6 +24,7 @@ spec:
         flags:
           - name: cloudsql.logical_decoding
             value: "on"
+        tier: db-custom-1-3840
   image: {{ image }}
   replicas:
     min: 2
