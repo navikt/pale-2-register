@@ -18,7 +18,7 @@ val ktfmtVersion = "0.44"
 val jvmVersion = "17"
 val snappyJavaVersion = "1.1.10.6"
 val commonsCompressVersion = "1.27.1"
-val nettyCodecHttp = "4.1.112.Final"
+val nettyCodecHttp = "4.1.113.Final"
 val kafkaVersion = "3.8.0"
 
 plugins {
