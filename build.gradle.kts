@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 group = "no.nav.syfo"
 version = "1.0.0"
 
@@ -15,11 +17,13 @@ val mockkVersion = "1.13.13"
 val kotlinVersion = "2.0.21"
 val googlecloudstorageVersion = "2.44.1"
 val ktfmtVersion = "0.44"
-val jvmVersion = "17"
-val snappyJavaVersion = "1.1.10.6"
-val commonsCompressVersion = "1.27.1"
-val nettyCodecHttp = "4.1.114.Final"
+val nettyCodecHttp = "4.1.115.Final"
 val kafkaVersion = "3.8.1"
+
+///Due to vulnerabilities
+val commonsCompressVersion = "1.27.1"
+
+val javaVersion = JvmTarget.JVM_21
 
 plugins {
     id("application")
@@ -83,8 +87,12 @@ dependencies {
         }
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion") {
-        exclude(group = "org.eclipse.jetty")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = javaVersion
     }
 }
 
