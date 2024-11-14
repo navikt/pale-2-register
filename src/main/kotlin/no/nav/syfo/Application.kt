@@ -68,7 +68,7 @@ fun Application.module() {
     val applicationState = ApplicationState()
     val database = Database(environmentVariables)
 
-    environment.monitor.subscribe(ApplicationStopped) {
+    monitor.subscribe(ApplicationStopped) {
         applicationState.ready = false
         applicationState.alive = false
     }
