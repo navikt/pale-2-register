@@ -57,7 +57,7 @@ spec:
     limits:
       memory: 2Gi
     requests:
-      cpu: 50m
+      cpu: 30m
       memory: 600Mi
   filesFrom:
     - secret: pale2-google-creds

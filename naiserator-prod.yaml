@@ -57,8 +57,8 @@ spec:
     limits:
       memory: 3Gi
     requests:
-      cpu: 100m
-      memory: 700Mi
+      cpu: 50m
+      memory: 650Mi
   filesFrom:
     - secret: pale2-google-creds
   kafka:
