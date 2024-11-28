@@ -8,13 +8,13 @@ val logbackVersion = "1.5.12"
 val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "5.11.3"
-val jacksonVersion = "2.18.1"
+val jacksonVersion = "2.18.2"
 val postgresVersion = "42.7.4"
 val flywayVersion = "11.0.0"
 val hikariVersion = "6.2.1"
 val testcontainerVersion = "1.20.4"
 val mockkVersion = "1.13.13"
-val kotlinVersion = "2.0.21"
+val kotlinVersion = "2.1.0"
 val googlecloudstorageVersion = "2.45.0"
 val ktfmtVersion = "0.44"
 val nettyCodecHttp = "4.1.115.Final"
@@ -27,7 +27,7 @@ val javaVersion = JvmTarget.JVM_21
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
     id("com.gradleup.shadow") version "8.3.5"
     id("com.diffplug.spotless") version "6.25.0"
 }
