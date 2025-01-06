@@ -4,7 +4,7 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val ktorVersion = "3.0.3"
-val logbackVersion = "1.5.15"
+val logbackVersion = "1.5.16"
 val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "5.11.4"
