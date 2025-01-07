@@ -4,13 +4,13 @@ group = "no.nav.syfo"
 version = "1.0.0"
 
 val ktorVersion = "3.0.3"
-val logbackVersion = "1.5.15"
+val logbackVersion = "1.5.16"
 val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "5.11.4"
 val jacksonVersion = "2.18.2"
 val postgresVersion = "42.7.4"
-val flywayVersion = "11.1.0"
+val flywayVersion = "11.1.1"
 val hikariVersion = "6.2.1"
 val testcontainerVersion = "1.20.4"
 val mockkVersion = "1.13.14"
@@ -29,7 +29,7 @@ plugins {
     id("application")
     kotlin("jvm") version "2.1.0"
     id("com.gradleup.shadow") version "8.3.5"
-    id("com.diffplug.spotless") version "6.25.0"
+    id("com.diffplug.spotless") version "7.0.1"
 }
 
 application {
