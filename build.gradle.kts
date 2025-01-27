@@ -14,7 +14,7 @@ val flywayVersion = "11.2.0"
 val hikariVersion = "6.2.1"
 val testcontainerVersion = "1.20.4"
 val mockkVersion = "1.13.16"
-val kotlinVersion = "2.1.0"
+val kotlinVersion = "2.1.10"
 val googlecloudstorageVersion = "2.47.0"
 val ktfmtVersion = "0.44"
 val nettyCodecHttp = "4.1.117.Final"
@@ -27,7 +27,7 @@ val javaVersion = JvmTarget.JVM_21
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.1.0"
+    kotlin("jvm") version "2.1.10"
     id("com.gradleup.shadow") version "8.3.5"
     id("com.diffplug.spotless") version "7.0.2"
 }
