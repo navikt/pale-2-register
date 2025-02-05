@@ -118,6 +118,12 @@ class LegeerklaeringsService(
                     StructuredArguments.fields(loggingMeta),
                 )
             } else {
+                if (legeerklaeringSak.receivedLegeerklaering.personNrPasient.length != 11) {
+                    log.error(
+                        "Personnummeret til pasienten er ikkje 11 siffer, skipper denne meldingen  {}",
+                        StructuredArguments.fields(loggingMeta),
+                    )
+                }
                 database.lagreMottattLegeerklearing(legeerklaeringSak)
                 log.info(
                     "Legeerklæring lagret i databasen, for {}",
