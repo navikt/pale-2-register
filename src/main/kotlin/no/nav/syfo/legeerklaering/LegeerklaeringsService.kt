@@ -123,13 +123,14 @@ class LegeerklaeringsService(
                         "Personnummeret til pasienten er ikkje 11 siffer, skipper denne meldingen  {}",
                         StructuredArguments.fields(loggingMeta),
                     )
+                } else {
+                    database.lagreMottattLegeerklearing(legeerklaeringSak)
+                    log.info(
+                        "Legeerklæring lagret i databasen, for {}",
+                        StructuredArguments.fields(loggingMeta),
+                    )
+                    MESSAGE_STORED_IN_DB_COUNTER.inc()
                 }
-                database.lagreMottattLegeerklearing(legeerklaeringSak)
-                log.info(
-                    "Legeerklæring lagret i databasen, for {}",
-                    StructuredArguments.fields(loggingMeta),
-                )
-                MESSAGE_STORED_IN_DB_COUNTER.inc()
             }
         }
     }
