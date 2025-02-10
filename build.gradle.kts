@@ -17,7 +17,7 @@ val mockkVersion = "1.13.16"
 val kotlinVersion = "2.1.10"
 val googlecloudstorageVersion = "2.48.1"
 val ktfmtVersion = "0.44"
-val nettyCodecHttp = "4.1.117.Final"
+val nettyCodecHttp = "4.1.118.Final"
 val kafkaVersion = "3.9.0"
 
 ///Due to vulnerabilities
