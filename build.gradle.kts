@@ -3,6 +3,8 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 group = "no.nav.syfo"
 version = "1.0.0"
 
+val javaVersion = JvmTarget.JVM_21
+
 val ktorVersion = "3.1.0"
 val logbackVersion = "1.5.16"
 val logstashencoderVersion = "8.0"
@@ -17,13 +19,10 @@ val mockkVersion = "1.13.16"
 val kotlinVersion = "2.1.10"
 val googlecloudstorageVersion = "2.48.2"
 val ktfmtVersion = "0.44"
-val nettyCodecHttp = "4.1.118.Final"
 val kafkaVersion = "3.9.0"
 
 ///Due to vulnerabilities
 val commonsCompressVersion = "1.27.1"
-
-val javaVersion = JvmTarget.JVM_21
 
 plugins {
     id("application")
@@ -50,11 +49,6 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    constraints {
-        implementation("io.netty:netty-codec-http:$nettyCodecHttp") {
-            because("override transient from io.ktor:ktor-server-netty")
-        }
-    }
 
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")
