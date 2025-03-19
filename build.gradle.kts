@@ -6,7 +6,7 @@ version = "1.0.0"
 val javaVersion = JvmTarget.JVM_21
 
 val ktorVersion = "3.1.1"
-val logbackVersion = "1.5.17"
+val logbackVersion = "1.5.18"
 val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "5.12.1"
