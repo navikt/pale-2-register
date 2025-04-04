@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
-import com.google.auth.Credentials
-import com.google.auth.oauth2.GoogleCredentials
 import com.google.cloud.storage.Storage
 import com.google.cloud.storage.StorageOptions
 import io.ktor.server.application.*
@@ -14,7 +12,6 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.routing.*
 import io.prometheus.client.hotspot.DefaultExports
-import java.io.FileInputStream
 import java.util.concurrent.TimeUnit
 import no.nav.syfo.bucket.BucketService
 import no.nav.syfo.db.Database
@@ -77,11 +74,7 @@ fun Application.module() {
 
     DefaultExports.initialize()
 
-    val paleStorageCredentials: Credentials =
-        GoogleCredentials.fromStream(FileInputStream("/var/run/secrets/pale2-google-creds.json"))
-
-    val bucketStorage: Storage =
-        StorageOptions.newBuilder().setCredentials(paleStorageCredentials).build().service
+    val bucketStorage: Storage = StorageOptions.newBuilder().build().service
     val bucketService = BucketService(environmentVariables.legeerklaeringBucketName, bucketStorage)
 
     val aivenConfig =

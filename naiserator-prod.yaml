@@ -63,6 +63,5 @@ spec:
     - secret: pale2-google-creds
   kafka:
     pool: nav-prod
-  env:
-    - name: PALE_BUCKET_NAME
-      value: teamsykmelding-pale2-legeerklaring-bucket-prod
+  envFrom:
+    - secret: pale-2-secret
