@@ -12,12 +12,12 @@ val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "5.13.3"
 val jacksonVersion = "2.19.1"
 val postgresVersion = "42.7.7"
-val flywayVersion = "11.10.1"
+val flywayVersion = "11.10.2"
 val hikariVersion = "6.3.0"
 val testcontainerVersion = "1.21.3"
 val mockkVersion = "1.14.4"
 val kotlinVersion = "2.2.0"
-val googlecloudstorageVersion = "2.53.2"
+val googlecloudstorageVersion = "2.53.3"
 val ktfmtVersion = "0.44"
 val kafkaVersion = "3.9.1"
 
@@ -28,7 +28,7 @@ plugins {
     id("application")
     kotlin("jvm") version "2.2.0"
     id("com.gradleup.shadow") version "8.3.8"
-    id("com.diffplug.spotless") version "7.0.4"
+    id("com.diffplug.spotless") version "7.1.0"
 }
 
 application {
