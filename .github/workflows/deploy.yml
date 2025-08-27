@@ -9,7 +9,7 @@ permissions:
   id-token: write
 jobs:
   jar-app:
-    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/jar-app-21.yaml@main
+    uses: navikt/teamsykmelding-github-actions-workflows/.github/workflows/plain-jar-app-21.yaml@main
     secrets: inherit
     with:
       app: pale-2-register
