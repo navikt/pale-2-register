@@ -27,7 +27,6 @@ val commonsCompressVersion = "1.27.1"
 plugins {
     id("application")
     kotlin("jvm") version "2.2.0"
-    id("com.gradleup.shadow") version "8.3.8"
     id("com.diffplug.spotless") version "7.0.4"
 }
 
@@ -91,21 +90,6 @@ kotlin {
 }
 
 tasks {
-    shadowJar {
-        mergeServiceFiles {
-            setPath("META-INF/services/org.flywaydb.core.extensibility.Plugin")
-        }
-        archiveBaseName.set("app")
-        archiveClassifier.set("")
-        isZip64 = true
-        manifest {
-            attributes(
-                mapOf(
-                    "Main-Class" to "no.nav.syfo.ApplicationKt",
-                ),
-            )
-        }
-    }
 
     test {
         useJUnitPlatform {}
