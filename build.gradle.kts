@@ -5,19 +5,19 @@ version = "1.0.0"
 
 val javaVersion = JvmTarget.JVM_21
 
-val ktorVersion = "3.2.3"
-val logbackVersion = "1.5.18"
-val logstashencoderVersion = "8.1"
+val ktorVersion = "3.3.1"
+val logbackVersion = "1.5.20"
+val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
-val junitjupiterVersion = "5.13.4"
-val jacksonVersion = "2.19.2"
-val postgresVersion = "42.7.7"
-val flywayVersion = "11.11.2"
+val junitjupiterVersion = "6.0.0"
+val jacksonVersion = "2.20.0"
+val postgresVersion = "42.7.8"
+val flywayVersion = "11.15.0"
 val hikariVersion = "7.0.2"
 val testcontainerVersion = "1.21.3"
-val mockkVersion = "1.14.5"
-val kotlinVersion = "2.2.10"
-val googlecloudstorageVersion = "2.56.0"
+val mockkVersion = "1.14.6"
+val kotlinVersion = "2.2.21"
+val googlecloudstorageVersion = "2.59.0"
 val ktfmtVersion = "0.44"
 val kafkaVersion = "3.9.1"
 
@@ -26,8 +26,8 @@ val commonsCompressVersion = "1.28.0"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.2.10"
-    id("com.diffplug.spotless") version "7.2.1"
+    kotlin("jvm") version "2.2.21"
+    id("com.diffplug.spotless") version "8.0.0"
 }
 
 application {
