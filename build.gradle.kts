@@ -6,7 +6,7 @@ version = "1.0.0"
 val javaVersion = JvmTarget.JVM_21
 
 val ktorVersion = "3.3.2"
-val logbackVersion = "1.5.20"
+val logbackVersion = "1.5.21"
 val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.0.1"
@@ -17,7 +17,7 @@ val hikariVersion = "7.0.2"
 val testcontainerVersion = "1.21.3"
 val mockkVersion = "1.14.6"
 val kotlinVersion = "2.2.21"
-val googlecloudstorageVersion = "2.59.0"
+val googlecloudstorageVersion = "2.60.0"
 val ktfmtVersion = "0.44"
 val kafkaVersion = "3.9.1"
 
