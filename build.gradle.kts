@@ -12,7 +12,7 @@ val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.0.1"
 val jacksonVersion = "2.20.1"
 val postgresVersion = "42.7.8"
-val flywayVersion = "11.17.0"
+val flywayVersion = "11.17.1"
 val hikariVersion = "7.0.2"
 val testcontainerVersion = "1.21.3"
 val mockkVersion = "1.14.6"
@@ -27,7 +27,7 @@ val commonsCompressVersion = "1.28.0"
 plugins {
     id("application")
     kotlin("jvm") version "2.2.21"
-    id("com.diffplug.spotless") version "8.0.0"
+    id("com.diffplug.spotless") version "8.1.0"
 }
 
 application {
