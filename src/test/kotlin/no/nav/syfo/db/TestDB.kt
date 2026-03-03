@@ -15,6 +15,7 @@ class TestDB private constructor() {
                 .withPassword("password")
                 .withUsername("postgres")
                 .withDatabaseName("postgres")
+                .withInitScript("db/testdb-init.sql")
 
         init {
             postgres.start()
