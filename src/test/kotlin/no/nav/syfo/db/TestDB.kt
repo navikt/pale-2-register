@@ -19,10 +19,10 @@ class TestDB private constructor() {
 
         init {
             postgres.start()
-         val env = EnvironmentVariables(
+        val env = EnvironmentVariables(
         databaseUsername = postgres.username,
         databasePassword = postgres.password,
-        dbHost = postgres.host, // or "localhost" depending on how Database builds the JDBC URL
+        dbHost = postgres.host,
         dbPort = postgres.firstMappedPort.toString(),
         dbName = postgres.databaseName,
         legeerklaeringBucketName = "test-bucket",
