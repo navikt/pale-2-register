@@ -21,17 +21,21 @@ This the high level flow for the application
 * Postgres
 
 #### Requirements
-* JDK 21
+* JDK 25
 
-Make sure you have the Java JDK 21 installed locally
+Make sure you have the Java JDK 25 installed locally
 You can check which version you have installed using this command:
 ``` bash
 java -version
 ```
 
 ### Build and run tests
-To build locally and run the integration tests you can simply run `./gradlew shadowJar` or on windows 
-`gradlew.bat shadowJar`
+To build locally and run the integration tests you can simply run 
+``` bash
+./gradlew installDist
+```
+or on windows
+`gradlew.bat installDist`
 
 ### Creating a docker image
 Creating a docker image should be as simple as `docker build -t pale-2-register .`

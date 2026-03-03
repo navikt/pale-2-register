@@ -1,8 +1,8 @@
-FROM gcr.io/distroless/java21-debian12@sha256:b9094cce11d2baac4b6bc51bb2d218c9fb60170655be5d6250a8143e0cde2621
+FROM gcr.io/distroless/java25-debian13@sha256:202ae7b10d0929fec7590927e5d14fad9b9a9b886ead6df4c555b8ae9ebeec17
 WORKDIR /app
-COPY build/libs/app-*.jar app.jar
+COPY build/install/*/lib /lib
 ENV JAVA_OPTS="-Dlogback.configurationFile=logback.xml"
 ENV TZ="Europe/Oslo"
 EXPOSE 8080
 USER nonroot
-CMD [ "app.jar" ]
+ENTRYPOINT ["java", "-cp", "/lib/*", "no.nav.syfo.ApplicationKt"]

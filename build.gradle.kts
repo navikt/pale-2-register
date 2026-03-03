@@ -1,11 +1,12 @@
+import com.diffplug.gradle.spotless.SpotlessTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val javaVersion = JvmTarget.JVM_21
+val javaVersion = JvmTarget.JVM_25
 
-val ktorVersion = "3.1.1"
+val ktorVersion = "3.3.1"
 val logbackVersion = "1.5.17"
 val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
@@ -16,7 +17,7 @@ val flywayVersion = "11.3.4"
 val hikariVersion = "6.2.1"
 val testcontainerVersion = "1.20.5"
 val mockkVersion = "1.13.17"
-val kotlinVersion = "2.1.10"
+val kotlinVersion = "2.3.10"
 val googlecloudstorageVersion = "2.49.0"
 val ktfmtVersion = "0.44"
 val kafkaVersion = "3.9.0"
@@ -26,9 +27,8 @@ val commonsCompressVersion = "1.27.1"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.1.10"
-    id("com.gradleup.shadow") version "8.3.6"
-    id("com.diffplug.spotless") version "7.0.2"
+    kotlin("jvm") version "2.3.10"
+    id("com.diffplug.spotless") version "8.2.1"
 }
 
 application {
@@ -91,35 +91,23 @@ kotlin {
 }
 
 tasks {
-    shadowJar {
-        mergeServiceFiles {
-            setPath("META-INF/services/org.flywaydb.core.extensibility.Plugin")
-        }
-        archiveBaseName.set("app")
-        archiveClassifier.set("")
-        isZip64 = true
-        manifest {
-            attributes(
-                mapOf(
-                    "Main-Class" to "no.nav.syfo.ApplicationKt",
-                ),
-            )
-        }
-    }
 
-    test {
+    withType<Test> {
         useJUnitPlatform {}
         testLogging {
-            events("skipped", "failed")
+            events("passed", "skipped", "failed")
+            showStandardStreams = true
             showStackTraces = true
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
     }
 
-    spotless {
-        kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
-        check {
-            dependsOn("spotlessApply")
+    withType<SpotlessTask> {
+        spotless{
+            kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
+            check {
+                dependsOn("spotlessApply")
+            }
         }
     }
 }
