@@ -20,10 +20,7 @@ val mockkVersion = "1.13.17"
 val kotlinVersion = "2.3.10"
 val googlecloudstorageVersion = "2.49.0"
 val ktfmtVersion = "0.44"
-val kafkaVersion = "3.9.0"
-
-///Due to vulnerabilities
-val commonsCompressVersion = "1.27.1"
+val kafkaVersion = "3.9.1"
 
 plugins {
     id("application")
@@ -65,7 +62,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
 
 
-    implementation("org.apache.kafka:kafka_2.12:$kafkaVersion")
+    implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
 
     implementation("com.google.cloud:google-cloud-storage:$googlecloudstorageVersion")
 

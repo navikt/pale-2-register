@@ -29,7 +29,9 @@ spec:
   replicas:
     min: 2
     max: 4
-    cpuThresholdPercentage: 90
+    scalingStrategy:
+      cpu:
+        thresholdPercentage: 90
   port: 8080
   liveness:
     path: /internal/is_alive
@@ -52,17 +54,15 @@ spec:
     logging:
       destinations:
         - id: loki
-        - id: elastic
   resources:
     limits:
-      memory: 3Gi
+      memory: 1Gi
     requests:
-      cpu: 50m
+      cpu: 25m
       memory: 650Mi
   filesFrom:
     - secret: pale2-google-creds
   kafka:
     pool: nav-prod
-  env:
-    - name: PALE_BUCKET_NAME
-      value: teamsykmelding-pale2-legeerklaring-bucket-prod
+  envFrom:
+    - secret: pale-2-secret
