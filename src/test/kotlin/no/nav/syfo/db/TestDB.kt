@@ -18,12 +18,20 @@ class TestDB private constructor() {
 
         init {
             postgres.start()
-            val mockEnv = mockk<EnvironmentVariables>(relaxed = true)
-            every { mockEnv.dbPort } returns postgres.firstMappedPort.toString()
-            every { mockEnv.databaseUsername } returns "postgres"
-            every { mockEnv.databasePassword } returns "password"
-            every { mockEnv.dbName } returns "postgres"
-            database = Database(mockEnv)
+         val env = EnvironmentVariables(
+        databaseUsername = postgres.username,
+        databasePassword = postgres.password,
+        dbHost = postgres.host, // or "localhost" depending on how Database builds the JDBC URL
+        dbPort = postgres.firstMappedPort.toString(),
+        dbName = postgres.databaseName,
+        legeerklaeringBucketName = "test-bucket",
+        cluster = "test",
+        applicationPort = 0,
+        applicationName = "test",
+    )
+            
+     database = Database(env)
+     
         }
     }
 }
