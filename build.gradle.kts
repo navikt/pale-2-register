@@ -15,7 +15,7 @@ val jacksonVersion = "2.18.3"
 val postgresVersion = "42.7.5"
 val flywayVersion = "11.3.4"
 val hikariVersion = "6.2.1"
-val testcontainerVersion = "1.20.5"
+val testcontainerVersion = "2.0.3"
 val mockkVersion = "1.13.17"
 val kotlinVersion = "2.3.10"
 val googlecloudstorageVersion = "2.49.0"
@@ -74,12 +74,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitjupiterVersion")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
-    testImplementation("org.testcontainers:postgresql:$testcontainerVersion")
-    constraints {
-        implementation("org.apache.commons:commons-compress:$commonsCompressVersion") {
-            because("Due to vulnerabilities, see CVE-2024-26308")
-        }
-    }
+    testImplementation("org.testcontainers:testcontainers-postgresql:$testcontainerVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 }
