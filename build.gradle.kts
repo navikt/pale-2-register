@@ -1,30 +1,31 @@
+import com.diffplug.gradle.spotless.SpotlessTask
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 group = "no.nav.syfo"
 version = "1.0.0"
 
-val javaVersion = JvmTarget.JVM_21
+val javaVersion = JvmTarget.JVM_25
 
-val ktorVersion = "3.4.0"
-val logbackVersion = "1.5.26"
-val logstashencoderVersion = "9.0"
+val ktorVersion = "3.3.1"
+val logbackVersion = "1.5.17"
+val logstashencoderVersion = "8.0"
 val prometheusVersion = "0.16.0"
-val junitjupiterVersion = "6.0.1"
-val jacksonVersion = "2.20.2"
-val postgresVersion = "42.7.8"
-val flywayVersion = "11.17.1"
-val hikariVersion = "7.0.2"
+val junitjupiterVersion = "5.12.0"
+val jacksonVersion = "2.18.3"
+val postgresVersion = "42.7.5"
+val flywayVersion = "11.3.4"
+val hikariVersion = "6.2.1"
 val testcontainerVersion = "2.0.3"
-val mockkVersion = "1.14.6"
-val kotlinVersion = "2.2.21"
-val googlecloudstorageVersion = "2.60.0"
+val mockkVersion = "1.14.9"
+val kotlinVersion = "2.3.10"
+val googlecloudstorageVersion = "2.49.0"
 val ktfmtVersion = "0.44"
 val kafkaVersion = "3.9.1"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.2.21"
-    id("com.diffplug.spotless") version "8.1.0"
+    kotlin("jvm") version "2.3.10"
+    id("com.diffplug.spotless") version "8.2.1"
 }
 
 application {
@@ -83,19 +84,22 @@ kotlin {
 
 tasks {
 
-    test {
+    withType<Test> {
         useJUnitPlatform {}
         testLogging {
-            events("skipped", "failed")
+            events("passed", "skipped", "failed")
+            showStandardStreams = true
             showStackTraces = true
             exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         }
     }
 
-    spotless {
-        kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
-        check {
-            dependsOn("spotlessApply")
+    withType<SpotlessTask> {
+        spotless{
+            kotlin { ktfmt(ktfmtVersion).kotlinlangStyle() }
+            check {
+                dependsOn("spotlessApply")
+            }
         }
     }
 }
