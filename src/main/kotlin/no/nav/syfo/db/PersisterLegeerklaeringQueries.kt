@@ -6,7 +6,7 @@ import no.nav.syfo.model.Legeerklaering
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.ReceivedLegeerklaering
 import no.nav.syfo.model.ValidationResult
-import no.nav.syfo.objectMapper
+import no.nav.syfo.jsonMapper
 import org.postgresql.util.PGobject
 
 fun DatabaseInterface.lagreMottattLegeerklearing(legeerklaeringSak: LegeerklaeringSak) {
@@ -151,11 +151,11 @@ fun DatabaseInterface.hentMsgId(legeerklaeringId: String): String? {
 fun Legeerklaering.toPGObject() =
     PGobject().also {
         it.type = "json"
-        it.value = objectMapper.writeValueAsString(this)
+        it.value = jsonMapper.writeValueAsString(this)
     }
 
 fun ValidationResult.toPGObject() =
     PGobject().also {
         it.type = "json"
-        it.value = objectMapper.writeValueAsString(this)
+        it.value = jsonMapper.writeValueAsString(this)
     }

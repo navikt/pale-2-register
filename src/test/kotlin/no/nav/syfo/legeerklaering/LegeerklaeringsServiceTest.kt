@@ -16,7 +16,7 @@ import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.Status
 import no.nav.syfo.model.ValidationResult
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
-import no.nav.syfo.objectMapper
+import no.nav.syfo.jsonMapper
 import no.nav.syfo.util.receivedLegeerklaering
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.clients.consumer.ConsumerRecords
@@ -48,7 +48,7 @@ class LegeerklaeringsServiceTest {
         every { aivenKafkaConsumer.subscribe(any<List<String>>()) } returns Unit
 
         val kafkaMessage =
-            objectMapper.writeValueAsString(
+            jsonMapper.writeValueAsString(
                 LegeerklaeringKafkaMessage(
                     "12314",
                     ValidationResult(Status.OK, emptyList()),

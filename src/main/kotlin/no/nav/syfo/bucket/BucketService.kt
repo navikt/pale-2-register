@@ -1,10 +1,10 @@
 package no.nav.syfo.bucket
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.google.cloud.storage.Storage
 import no.nav.syfo.log
 import no.nav.syfo.model.ReceivedLegeerklaering
-import no.nav.syfo.objectMapper
+import no.nav.syfo.jsonMapper
+import tools.jackson.module.kotlin.readValue
 
 class BucketService(
     private val name: String,
@@ -20,7 +20,7 @@ class BucketService(
 
         val content = blob.getContent()
         log.info("Har hentet legeerklæring for $objectId")
-        return objectMapper.readValue(content)
+        return jsonMapper.readValue(content)
     }
 
     fun deleteLegeerklaring(objectId: String) {

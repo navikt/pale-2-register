@@ -6,26 +6,25 @@ version = "1.0.0"
 
 val javaVersion = JvmTarget.JVM_25
 
-val ktorVersion = "3.3.1"
-val logbackVersion = "1.5.17"
-val logstashencoderVersion = "8.0"
+val ktorVersion = "3.5.2"
+val logbackVersion = "1.6.3"
+val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
-val junitjupiterVersion = "5.12.0"
-val jacksonVersion = "2.18.3"
+val junitjupiterVersion = "6.1.3"
+val jacksonVersion = "3.2.2"
 val postgresVersion = "42.7.5"
 val flywayVersion = "11.3.4"
 val hikariVersion = "6.2.1"
-val testcontainerVersion = "2.0.3"
-val mockkVersion = "1.14.9"
-val kotlinVersion = "2.3.10"
+val testcontainerVersion = "2.0.5"
+val mockkVersion = "1.14.11"
 val googlecloudstorageVersion = "2.49.0"
-val ktfmtVersion = "0.44"
-val kafkaVersion = "3.9.1"
+val ktfmtVersion = "0.56"
+val kafkaVersion = "4.3.1"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.3.10"
-    id("com.diffplug.spotless") version "8.2.1"
+    kotlin("jvm") version "2.4.10"
+    id("com.diffplug.spotless") version "8.10.1"
 }
 
 application {
@@ -42,7 +41,6 @@ repositories {
     }
 }
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion")
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -58,9 +56,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashencoderVersion")
 
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-
+    implementation("tools.jackson.module:jackson-module-kotlin:${jacksonVersion}")
 
     implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
 
