@@ -1,6 +1,5 @@
 package no.nav.syfo.legeerklaering
 
-import com.fasterxml.jackson.module.kotlin.readValue
 import java.lang.Exception
 import java.time.Duration
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -22,11 +21,12 @@ import no.nav.syfo.metrics.INCOMING_MESSAGE_COUNTER
 import no.nav.syfo.metrics.MESSAGE_STORED_IN_DB_COUNTER
 import no.nav.syfo.model.LegeerklaeringSak
 import no.nav.syfo.model.kafka.LegeerklaeringKafkaMessage
-import no.nav.syfo.objectMapper
+import no.nav.syfo.jsonMapper
 import no.nav.syfo.utils.LoggingMeta
 import no.nav.syfo.utils.TrackableException
 import no.nav.syfo.utils.wrapExceptions
 import org.apache.kafka.clients.consumer.KafkaConsumer
+import tools.jackson.module.kotlin.readValue
 
 class LegeerklaeringsService(
     val env: EnvironmentVariables,
@@ -60,7 +60,7 @@ class LegeerklaeringsService(
                             }
                         } else {
                             val legeerklaeringKafkaMessage: LegeerklaeringKafkaMessage =
-                                objectMapper.readValue(consumerRecord.value())
+                                jsonMapper.readValue(consumerRecord.value())
                             val receivedLegeerklaering =
                                 bucketService.getLegeerklaring(
                                     legeerklaeringKafkaMessage.legeerklaeringObjectId
