@@ -12,19 +12,19 @@ val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.1.3"
 val jacksonVersion = "3.2.2"
-val postgresVersion = "42.7.5"
-val flywayVersion = "11.3.4"
-val hikariVersion = "6.2.1"
+val postgresVersion = "42.7.13"
+val flywayVersion = "13.5.0"
+val hikariVersion = "7.1.0"
 val testcontainerVersion = "2.0.5"
 val mockkVersion = "1.14.11"
-val googlecloudstorageVersion = "2.49.0"
+val googlecloudstorageVersion = "2.73.0"
 val ktfmtVersion = "0.56"
 val kafkaVersion = "4.3.1"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.4.10"
-    id("com.diffplug.spotless") version "8.10.1"
+    kotlin("jvm") version "2.4.20"
+    id("com.diffplug.spotless") version "8.10.2"
 }
 
 application {
