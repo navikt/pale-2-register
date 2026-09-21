@@ -22,12 +22,12 @@ val ktfmtVersion = "0.56"
 val kafkaVersion = "4.3.1"
 
 // Included due vulnerabilities in this transitive dependency
-val nettyVersion = "4.2.17.Final"
+val nettyVersion = "4.2.18.Final"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.4.10"
-    id("com.diffplug.spotless") version "8.10.1"
+    kotlin("jvm") version "2.4.20"
+    id("com.diffplug.spotless") version "8.10.2"
 }
 
 application {
