@@ -10,7 +10,7 @@ spec:
     sqlInstances:
       - name: pale-2-register-instance
         type: POSTGRES_16
-        diskSize: 100
+        diskSize: 75
         databases:
           - name: pale-2-register
             envVarPrefix: DB
