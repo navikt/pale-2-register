@@ -11,24 +11,24 @@ val logbackVersion = "1.6.5"
 val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.1.3"
-val jacksonVersion = "3.2.2"
-val postgresVersion = "42.7.13"
-val flywayVersion = "13.6.0"
+val jacksonVersion = "3.2.3"
+val postgresVersion = "42.7.14"
+val flywayVersion = "13.10.0"
 val hikariVersion = "7.1.0"
 val testcontainerVersion = "2.0.5"
 val mockkVersion = "1.14.11"
-val googlecloudstorageVersion = "2.73.0"
+val googlecloudstorageVersion = "2.75.0"
 val ktfmtVersion = "0.56"
-val kafkaVersion = "4.3.1"
+val kafkaVersion = "4.3.2"
 
 // Included due vulnerabilities in this transitive dependency
-val nettyVersion = "4.2.17.Final"
+val nettyVersion = "4.2.19.Final"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.4.20"
+    kotlin("jvm") version "2.4.21"
     id("io.ktor.plugin") version "3.6.0"
-    id("com.diffplug.spotless") version "8.10.1"
+    id("com.diffplug.spotless") version "8.10.4"
 }
 
 application {
