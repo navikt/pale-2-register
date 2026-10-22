@@ -32,10 +32,10 @@ java -version
 ### Build and run tests
 To build locally and run the integration tests you can simply run 
 ``` bash
-./gradlew installDist
+./gradlew clean build
 ```
 or on windows
-`gradlew.bat installDist`
+`gradlew.bat clean build`
 
 ### Creating a docker image
 Creating a docker image should be as simple as `docker build -t pale-2-register .`
@@ -47,11 +47,11 @@ Creating a docker image should be as simple as `docker build -t pale-2-register 
 
 For information on connecting to dev og prod DB see: [Postgres GCP](https://doc.nais.io/cli/commands/postgres/)
 
-### Upgrading the gradle wrapper
-Find the newest version of gradle here: https://gradle.org/releases/ Then run this command:
+### Upgrading the Gradle wrapper
 
-```./gradlew wrapper --gradle-version $gradleVersjon```
-
+``` bash 
+./gradlew wrapper --gradle-version latest
+```
 ### Contact
 
 This project is maintained by [navikt/teamsykmelding](CODEOWNERS)
