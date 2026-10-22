@@ -6,8 +6,8 @@ version = "1.0.0"
 
 val javaVersion = JvmTarget.JVM_25
 
-val ktorVersion = "3.5.2"
-val logbackVersion = "1.6.3"
+val ktorVersion = "3.6.0"
+val logbackVersion = "1.6.5"
 val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.1.3"
@@ -26,7 +26,8 @@ val nettyVersion = "4.2.17.Final"
 
 plugins {
     id("application")
-    kotlin("jvm") version "2.4.10"
+    kotlin("jvm") version "2.4.20"
+    id("io.ktor.plugin") version "3.6.0"
     id("com.diffplug.spotless") version "8.10.1"
 }
 
@@ -87,6 +88,14 @@ kotlin {
 }
 
 tasks {
+
+    shadowJar {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        mergeServiceFiles {}
+        from("src/main/resources/logback.xml") {
+            into("/")
+        }
+    }
 
     withType<Test> {
         useJUnitPlatform {}
