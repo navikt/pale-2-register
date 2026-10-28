@@ -11,7 +11,7 @@ val logbackVersion = "1.6.5"
 val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.1.3"
-val jacksonVersion = "3.2.3"
+val jacksonVersion = "3.2.4"
 val postgresVersion = "42.7.14"
 val flywayVersion = "13.10.0"
 val hikariVersion = "7.1.0"
@@ -21,8 +21,6 @@ val googlecloudstorageVersion = "2.75.0"
 val ktfmtVersion = "0.56"
 val kafkaVersion = "4.3.2"
 
-// Included due vulnerabilities in this transitive dependency
-val nettyVersion = "4.2.19.Final"
 
 plugins {
     id("application")
@@ -48,11 +46,6 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    constraints {
-        implementation("io.netty:netty-handler:$nettyVersion") {
-            because("Due to this transitive dependency vulnerabilities")
-        }
-    }
 
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("com.zaxxer:HikariCP:$hikariVersion")

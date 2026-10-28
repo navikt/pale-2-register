@@ -6,32 +6,19 @@ metadata:
   labels:
     team: teamsykmelding
 spec:
-  gcp:
-    sqlInstances:
-      - name: pale-2-register-instance
-        type: POSTGRES_16
-        diskSize: 75
-        databases:
-          - name: pale-2-register
-            envVarPrefix: DB
-            users:
-              - name: macgyver
-        diskAutoresize: true
-        highAvailability: false
-        diskType: SSD
-        insights:
-          enabled: true
-        flags:
-          - name: cloudsql.logical_decoding
-            value: "on"
-        tier: db-custom-1-3840
+  port: 8080
   replicas:
-    min: 2
-    max: 4
+    min: 1
+    max: 1
     scalingStrategy:
       cpu:
         thresholdPercentage: 90
-  port: 8080
+  resources:
+    limits:
+      memory: 2Gi
+    requests:
+      cpu: 30m
+      memory: 600Mi
   liveness:
     path: /internal/is_alive
     initialDelay: 10
@@ -53,15 +40,5 @@ spec:
     logging:
       destinations:
         - id: loki
-  resources:
-    limits:
-      memory: 1Gi
-    requests:
-      cpu: 100m
-      memory: 650Mi
-  filesFrom:
-    - secret: pale2-google-creds
-  kafka:
-    pool: nav-prod
   envFrom:
     - secret: pale-2-secret
