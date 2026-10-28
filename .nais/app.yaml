@@ -7,6 +7,18 @@ metadata:
     team: teamsykmelding
 spec:
   port: 8080
+  replicas:
+    min: 1
+    max: 1
+    scalingStrategy:
+      cpu:
+        thresholdPercentage: 90
+  resources:
+    limits:
+      memory: 2Gi
+    requests:
+      cpu: 30m
+      memory: 600Mi
   liveness:
     path: /internal/is_alive
     initialDelay: 10
