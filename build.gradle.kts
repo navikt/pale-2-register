@@ -6,27 +6,27 @@ version = "1.0.0"
 
 val javaVersion = JvmTarget.JVM_25
 
-val ktorVersion = "3.6.0"
-val logbackVersion = "1.6.5"
+val ktorVersion = "3.6.1"
+val logbackVersion = "1.6.6"
 val logstashencoderVersion = "9.0"
 val prometheusVersion = "0.16.0"
 val junitjupiterVersion = "6.1.3"
-val jacksonVersion = "3.2.4"
+val jacksonVersion = "3.3.0"
 val postgresVersion = "42.7.14"
-val flywayVersion = "13.10.0"
+val flywayVersion = "13.12.1"
 val hikariVersion = "7.1.0"
 val testcontainerVersion = "2.0.5"
-val mockkVersion = "1.14.11"
-val googlecloudstorageVersion = "2.75.0"
+val mockkVersion = "1.14.12"
+val googlecloudstorageVersion = "2.78.0"
 val ktfmtVersion = "0.56"
-val kafkaVersion = "4.3.2"
+val kafkaVersion = "4.4.0"
 
 
 plugins {
     id("application")
     kotlin("jvm") version "2.4.21"
-    id("io.ktor.plugin") version "3.6.0"
-    id("com.diffplug.spotless") version "8.10.4"
+    id("io.ktor.plugin") version "3.6.1"
+    id("com.diffplug.spotless") version "8.11.0"
 }
 
 application {
